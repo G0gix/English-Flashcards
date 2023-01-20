@@ -3,54 +3,33 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="English_Flashcards.MainPage"
              xmlns:viewmodels="clr-namespace:English_Flashcards.ViewModels"
+             xmlns:models="clr-namespace:English_Flashcards.Models"
              Title="{Binding Title}"
              >
     <ContentPage.BindingContext>
         <viewmodels:MainPageVewModel />
     </ContentPage.BindingContext>
-    <ScrollView>
-        <CollectionView ItemsSource="{Binding Cards}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <VerticalStackLayout
-                        Spacing="25"
-                        Padding="30,0"
-                        VerticalOptions="Center"
-                        >
-                        <SwipeView>
-                            <SwipeView.LeftItems>
-                                <SwipeItems Mode="Execute">
-                                    <SwipeItem Text="Повторить" BackgroundColor="LightPink"  Command="{Binding DeleteCardCommand}" />
-                                </SwipeItems>
-                            </SwipeView.LeftItems>
-                            <SwipeView.RightItems>
-                                <SwipeItems Mode="Execute">
-                                    <SwipeItem Text="Убрать" BackgroundColor="LightGreen"  Command="{Binding CardDone}" />
-                                </SwipeItems>
-                            </SwipeView.RightItems>
-
-                            <StackLayout Orientation="Vertical"
-                                 BackgroundColor="{StaticResource Primary}"
-                                 WidthRequest="{OnPlatform WinUI=700, Default=700, iOS=300, Android=300 }"
-                                 HeightRequest="{OnPlatform WinUI=500, Android=300, iOS=300, Default=500}"
-                                 >
-
-                                <Label Text="Вопрос" 
-                                       TextColor="White"
-                                       HorizontalTextAlignment="Center"
-                                       FontSize="{OnPlatform WinUI=40, Android=15, iOS=15, Default=40}" 
-                                       />
-                                <Label Text="{Binding EnglishText}" 
-                                       FontSize="{OnPlatform WinUI=80, Android=40, iOS=50, Default=80}" 
-                                       HorizontalOptions="Center" 
-                                       VerticalOptions="CenterAndExpand" 
-                                       HorizontalTextAlignment="Center"
-                                       />
-                            </StackLayout>
-                        </SwipeView>
-                      </VerticalStackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </ScrollView>
+    <ContentPage.Resources>
+        <Style x:Key="labelStyle" TargetType="{x:Type Label}">
+            <Setter Property="WidthRequest" Value="150"/>
+            <Setter Property="HeightRequest" Value="150"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="FontSize" Value="Medium"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        </Style>
+    </ContentPage.Resources>
+    <Grid BindableLayout.ItemsSource="{Binding Cards}">
+        <BindableLayout.ItemTemplate>
+            <DataTemplate>
+                <Grid>
+                    <Label Text="{Binding RussianText}" ZIndex="{Binding DisplayOptions.ZIndex}" 
+                           Margin="{Binding DisplayOptions.Margin}" BackgroundColor="Green" Style="{StaticResource labelStyle}" />
+                </Grid>
+            </DataTemplate>
+        </BindableLayout.ItemTemplate>
+    </Grid>
 </ContentPage>

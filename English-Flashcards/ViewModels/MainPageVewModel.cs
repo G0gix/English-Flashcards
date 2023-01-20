@@ -43,7 +43,7 @@ namespace English_Flashcards.ViewModels
         #endregion
 
         #region Collections
-        public ObservableCollection<Card> Cards;
+        public ObservableCollection<Card> Cards { get; set; }
         #endregion
 
         public MainPageVewModel()
@@ -55,10 +55,23 @@ namespace English_Flashcards.ViewModels
             #endregion
 
             #region Collections
-            Cards = new ObservableCollection<Card>
+            Cards = new ObservableCollection<Card>()
             {
-                new Card { RussianText = "algorithm", EnglishText = "алгоритм" },
-                new Card {EnglishText="among", RussianText = "среди, между" }
+                new Card { RussianText = "algorithm", EnglishText = "алгоритм",
+                    DisplayOptions = new CartDisplayOptions
+                    {
+                        Margin = new Thickness {Left = 10, Top = 0, Right = 0, Bottom = 0,},
+                        ZIndex = 1,
+                    }
+                },
+                new Card {EnglishText="among", RussianText = "среди, между", 
+                    DisplayOptions = new CartDisplayOptions
+                    { 
+                        Margin = new Thickness {Left = 30, Top = 30, Right = 0, Bottom = 0, },
+                        ZIndex = 2,
+                        
+                    } 
+                },
             };
             #endregion
         }
