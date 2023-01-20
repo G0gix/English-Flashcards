@@ -1,4 +1,6 @@
-﻿namespace English_Flashcards.Models
+﻿using Microsoft.Maui.Graphics;
+
+namespace English_Flashcards.Models
 {
     internal class Card
     {

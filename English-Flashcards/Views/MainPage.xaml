@@ -9,25 +9,30 @@
     <ContentPage.BindingContext>
         <viewmodels:MainPageVewModel />
     </ContentPage.BindingContext>
-    <ContentPage.Resources>
-        <Style x:Key="labelStyle" TargetType="{x:Type Label}">
-            <Setter Property="WidthRequest" Value="150"/>
-            <Setter Property="HeightRequest" Value="150"/>
-            <Setter Property="HorizontalOptions" Value="Center"/>
-            <Setter Property="VerticalOptions" Value="Center"/>
-            <Setter Property="FontSize" Value="Medium"/>
-            <Setter Property="FontAttributes" Value="Bold"/>
-            <Setter Property="TextColor" Value="White"/>
-            <Setter Property="VerticalTextAlignment" Value="Center"/>
-            <Setter Property="HorizontalTextAlignment" Value="Center"/>
-        </Style>
-    </ContentPage.Resources>
     <Grid BindableLayout.ItemsSource="{Binding Cards}">
         <BindableLayout.ItemTemplate>
             <DataTemplate>
                 <Grid>
-                    <Label Text="{Binding RussianText}" ZIndex="{Binding DisplayOptions.ZIndex}" 
-                           Margin="{Binding DisplayOptions.Margin}" BackgroundColor="Green" Style="{StaticResource labelStyle}" />
+                    <SwipeView>
+                        <SwipeView.LeftItems>
+                            <SwipeItems Mode="Execute">
+                                <SwipeItem Text="Удалить" BackgroundColor="Gold"/>
+                            </SwipeItems>
+                        </SwipeView.LeftItems>
+                        <StackLayout Margin="{Binding DisplayOptions.Margin}"
+                              WidthRequest="300"
+                              HeightRequest="300"
+                              HorizontalOptions="CenterAndExpand"
+                              VerticalOptions="CenterAndExpand"
+                              BackgroundColor="{Binding DisplayOptions.BackColor}" 
+                            >
+                            <Label Text="{Binding RussianText}" ZIndex="{Binding DisplayOptions.ZIndex}" 
+                                   HorizontalOptions="CenterAndExpand"
+                                   VerticalOptions="CenterAndExpand"
+                                   HorizontalTextAlignment="Center"
+                                   />
+                        </StackLayout>
+                    </SwipeView>
                 </Grid>
             </DataTemplate>
         </BindableLayout.ItemTemplate>

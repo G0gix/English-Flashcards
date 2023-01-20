@@ -62,6 +62,7 @@ namespace English_Flashcards.ViewModels
                     {
                         Margin = new Thickness {Left = 10, Top = 0, Right = 0, Bottom = 0,},
                         ZIndex = 1,
+                        BackColor = Color.FromHex("#FFFF")
                     }
                 },
                 new Card {EnglishText="among", RussianText = "среди, между", 
@@ -69,7 +70,7 @@ namespace English_Flashcards.ViewModels
                     { 
                         Margin = new Thickness {Left = 30, Top = 30, Right = 0, Bottom = 0, },
                         ZIndex = 2,
-                        
+                        BackColor = Color.FromHex("#F95F62"),
                     } 
                 },
             };
