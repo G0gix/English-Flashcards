@@ -1,5 +1,36 @@
-﻿using System;
+﻿
+/* Unmerged change from project 'English-Flashcards (net6.0-maccatalyst)'
+Before:
+using System;
 using English_Flashcards.Infrastructure.Commands.Base;
+using Command = English_Flashcards.Infrastructure.Commands.Base.Command;
+After:
+using English_Flashcards.Infrastructure.Commands.Base;
+using System;
+using Command = English_Flashcards.Infrastructure.Commands.Base.Command;
+*/
+
+/* Unmerged change from project 'English-Flashcards (net6.0-android)'
+Before:
+using System;
+using English_Flashcards.Infrastructure.Commands.Base;
+using Command = English_Flashcards.Infrastructure.Commands.Base.Command;
+After:
+using English_Flashcards.Infrastructure.Commands.Base;
+using System;
+using Command = English_Flashcards.Infrastructure.Commands.Base.Command;
+*/
+
+/* Unmerged change from project 'English-Flashcards (net6.0-ios)'
+Before:
+using System;
+using English_Flashcards.Infrastructure.Commands.Base;
+using Command = English_Flashcards.Infrastructure.Commands.Base.Command;
+After:
+using English_Flashcards.Infrastructure.Commands.Base;
+using System;
+using Command = English_Flashcards.Infrastructure.Commands.Base.Command;
+*/
 using Command = English_Flashcards.Infrastructure.Commands.Base.Command;
 
 namespace English_Flashcards.Infrastructure.Commands

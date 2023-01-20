@@ -49,7 +49,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Infrastructure\Commands\" />
-	  <Folder Include="Models\" />
 	  <Folder Include="Resources\Images\" />
 	</ItemGroup>
 

@@ -8,31 +8,49 @@
     <ContentPage.BindingContext>
         <viewmodels:MainPageVewModel />
     </ContentPage.BindingContext>
-   <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center"
-            >
-            <VerticalStackLayout.GestureRecognizers>
-                <SwipeGestureRecognizer Direction="Right" Command="{Binding SwipeCommand}" CommandParameter="Right" />
-                <SwipeGestureRecognizer Direction="Left" Command="{Binding SwipeCommand}" CommandParameter="Left" />
-            </VerticalStackLayout.GestureRecognizers>
-            
-            <StackLayout Orientation="Vertical"
-                         BackgroundColor="{StaticResource Primary}"
-                         WidthRequest="700"
-                         HeightRequest="500"
-                         >
-                <Label Text="Вопрос" FontSize="40" TextColor="White"
-                       HorizontalTextAlignment="Center"
-                       />
-                <Label Text="Hello" FontSize="80" 
-                       HorizontalOptions="Center" 
-                       VerticalOptions="CenterAndExpand" 
-                       HorizontalTextAlignment="Center"
-                       />
-            </StackLayout>
-        </VerticalStackLayout>
-   </ScrollView>
+    <ScrollView>
+        <CollectionView ItemsSource="{Binding Cards}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <VerticalStackLayout
+                        Spacing="25"
+                        Padding="30,0"
+                        VerticalOptions="Center"
+                        >
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="Повторить" BackgroundColor="LightPink"  Command="{Binding DeleteCardCommand}" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="Убрать" BackgroundColor="LightGreen"  Command="{Binding CardDone}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <StackLayout Orientation="Vertical"
+                                 BackgroundColor="{StaticResource Primary}"
+                                 WidthRequest="{OnPlatform WinUI=700, Default=700, iOS=300, Android=300 }"
+                                 HeightRequest="{OnPlatform WinUI=500, Android=300, iOS=300, Default=500}"
+                                 >
+
+                                <Label Text="Вопрос" 
+                                       TextColor="White"
+                                       HorizontalTextAlignment="Center"
+                                       FontSize="{OnPlatform WinUI=40, Android=15, iOS=15, Default=40}" 
+                                       />
+                                <Label Text="{Binding EnglishText}" 
+                                       FontSize="{OnPlatform WinUI=80, Android=40, iOS=50, Default=80}" 
+                                       HorizontalOptions="Center" 
+                                       VerticalOptions="CenterAndExpand" 
+                                       HorizontalTextAlignment="Center"
+                                       />
+                            </StackLayout>
+                        </SwipeView>
+                      </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ScrollView>
 </ContentPage>
