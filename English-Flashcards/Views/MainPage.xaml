@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="English_Flashcards.MainPage"
              xmlns:viewmodels="clr-namespace:English_Flashcards.ViewModels"
+             Title="{Binding Title}"
              >
     <ContentPage.BindingContext>
         <viewmodels:MainPageVewModel />
@@ -11,32 +12,27 @@
         <VerticalStackLayout
             Spacing="25"
             Padding="30,0"
-            VerticalOptions="Center">
-
+            VerticalOptions="Center"
+            >
+            <VerticalStackLayout.GestureRecognizers>
+                <SwipeGestureRecognizer Direction="Right" Command="{Binding SwipeCommand}" CommandParameter="Right" />
+                <SwipeGestureRecognizer Direction="Left" Command="{Binding SwipeCommand}" CommandParameter="Left" />
+            </VerticalStackLayout.GestureRecognizers>
             
-            <Label
-                Text="{Binding Test}"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
-
-            <Label Text="{Binding ClickCount}" />
-
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Command="{Binding Counter}"
-                HorizontalOptions="Center" />
-
+            <StackLayout Orientation="Vertical"
+                         BackgroundColor="{StaticResource Primary}"
+                         WidthRequest="700"
+                         HeightRequest="500"
+                         >
+                <Label Text="Вопрос" FontSize="40" TextColor="White"
+                       HorizontalTextAlignment="Center"
+                       />
+                <Label Text="Hello" FontSize="80" 
+                       HorizontalOptions="Center" 
+                       VerticalOptions="CenterAndExpand" 
+                       HorizontalTextAlignment="Center"
+                       />
+            </StackLayout>
         </VerticalStackLayout>
-    </ScrollView>
-
+   </ScrollView>
 </ContentPage>
