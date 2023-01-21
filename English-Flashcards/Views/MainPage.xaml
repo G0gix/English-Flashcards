@@ -14,8 +14,10 @@
                  VerticalOptions="CenterAndExpand"
                  >
         <StackLayout Orientation="Horizontal"
-                     
                     >
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ShowCardAnswerCommand}" />
+            </StackLayout.GestureRecognizers>
             <SwipeView>
                 <SwipeView.LeftItems>
                     <SwipeItems Mode="Execute">
@@ -33,12 +35,18 @@
                          VerticalOptions="Center"
                          WidthRequest="{OnPlatform Android=300, WinUI=500, iOS=300}"
                          HeightRequest="{OnPlatform Android=300, WinUI=500, iOS=300}"
-                         BackgroundColor="{Binding DipsplayCard.DisplayOptions.BackColor}"
+                         BackgroundColor="{Binding DisplayedCard.DisplayOptions.BackColor}"
                          >
-                <Label Text="{Binding DipsplayCard.EnglishText}" FontSize="50"
+                <Label Text="{Binding DisplayedCard.EnglishText}" FontSize="50"
                        HorizontalTextAlignment="Center"
                        HorizontalOptions="CenterAndExpand"
                        VerticalOptions="CenterAndExpand"
+                       />
+                <Label Text="{Binding DisplayedCard.RussianText}" 
+                       HorizontalTextAlignment="Center"
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="CenterAndExpand"
+                       IsVisible="{Binding DisplayedCard.DisplayOptions.ShowAnswer}"
                        />
             </StackLayout>
         </StackLayout>
@@ -48,6 +56,7 @@
                      Margin="88,40,0,40"
                      WidthRequest="500"
                      >
+           
             <Button Text="Не знаю" BackgroundColor="#D22F47" WidthRequest="245" HeightRequest="50" TextColor="White"
                     Margin="0,0,10,0"
                     Command="{Binding RepeatCardCommand}"

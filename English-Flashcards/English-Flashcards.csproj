@@ -50,6 +50,7 @@
 	<ItemGroup>
 	  <Folder Include="Infrastructure\Commands\" />
 	  <Folder Include="Resources\Images\" />
+	  <Folder Include="ViewModels\Base\" />
 	</ItemGroup>
 
 	<ItemGroup>

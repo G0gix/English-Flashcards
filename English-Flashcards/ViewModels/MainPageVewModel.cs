@@ -1,11 +1,14 @@
 ﻿using English_Flashcards.Infrastructure.Commands;
 using English_Flashcards.Models;
+using English_Flashcards.Models.Base;
 using English_Flashcards.ViewModels.Base;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace English_Flashcards.ViewModels
 {
@@ -19,7 +22,8 @@ namespace English_Flashcards.ViewModels
         private bool CanRepeatCardCommandExecute(object p) => true;
         private void OnRepeatCardCommandExecute(object p)
         {
-
+            Cards.Enqueue(DisplayedCard);
+            DisplayedCard = Cards.Dequeue();
         }
         #endregion
 
@@ -28,15 +32,32 @@ namespace English_Flashcards.ViewModels
         private bool CanCardDoneCommandExecute(object p) => true;
         private async void OnCardDoneCommandExecute(object p)
         {
-            await Application.Current.MainPage.DisplayAlert("Done", "cARD DONE", "Ok");
+            if (Cards.Count == 0)
+            {
+                DisplayedCard= null;
+                await App.Current.MainPage.DisplayAlert("Внимание", "Карты закончились", "Ok");
+                return;
+            }
+
+            DisplayedCard = Cards.Dequeue();
         }
+
+
+        #region ShowCardAnswer
+        public ICommand ShowCardAnswerCommand { get; }
+        private bool CanShowCardAnswerCommandExecute(object p) => true;
+        private async void OnShowCardAnswerCommandExecute(object p)
+        {
+            DisplayedCard.DisplayOptions.ShowAnswer = true;
+        }
+        #endregion
 
 
         #endregion
         #endregion
 
         #region Collections
-        public  static ObservableCollection<Card> Cards { get; set; }
+        public  static Queue<Card> Cards { get; set; }
         #endregion
 
         public MainPageVewModel()
@@ -44,52 +65,34 @@ namespace English_Flashcards.ViewModels
             #region Commands
             RepeatCardCommand = new LamdaCommand(OnRepeatCardCommandExecute, CanRepeatCardCommandExecute);
             CardDoneCommand = new LamdaCommand(OnCardDoneCommandExecute, CanCardDoneCommandExecute);
+            ShowCardAnswerCommand = new LamdaCommand(OnShowCardAnswerCommandExecute, CanShowCardAnswerCommandExecute);
             #endregion
 
             #region Collections
-            Cards = new ObservableCollection<Card>()
-            {
-                new Card { RussianText = "algorithm", EnglishText = "алгоритм",
-                    DisplayOptions = new CartDisplayOptions
-                    {
-                        Margin = new Thickness {Left = 10, Top = 0, Right = 0, Bottom = 0,},
-                        ZIndex = 1,
-                        BackColor = Color.FromHex("#FFFF")
-                    }
-                },
-                new Card {EnglishText="among", RussianText = "среди, между", 
-                    DisplayOptions = new CartDisplayOptions
-                    { 
-                        Margin = new Thickness {Left = 30, Top = 30, Right = 0, Bottom = 0, },
-                        ZIndex = 2,
-                        BackColor = Color.FromHex("#F95F62"),
-                    } 
-                },
-            };
+            Cards = new Queue<Card>();
+            Test()
 
-            DipsplayCard = Cards[1];
+
+             DisplayedCard = Cards.Dequeue();
             #endregion
         }
-
-
-        #region Card - DipsplayCard 
+        #region Properties
+        #region Card - DisplayedCard 
         /// <summary>
         /// 
         /// </summary>
-        private Card _DipsplayCard;
+        private Card _DisplayedCard;
 
         /// <summary>
         /// 
         /// </summary>
-        public Card DipsplayCard
+        public Card DisplayedCard
         {
-            get { return _DipsplayCard; }
-            set => Set(ref _DipsplayCard, value);
+            get { return _DisplayedCard; }
+            set => Set(ref _DisplayedCard, value);
         }
         #endregion
 
-
-        #region Properties
         #region string - Title 
         /// <summary>
         /// Main window Title
@@ -106,5 +109,58 @@ namespace English_Flashcards.ViewModels
         }
         #endregion
         #endregion
+
+
+        static void Test()
+        {
+            Cards.Enqueue(
+                new Card
+                {
+                    RussianText = "algorithm",
+                    EnglishText = "алгоритм",
+                    DisplayOptions = new CartDisplayOptions
+                    {
+                        Margin = new Thickness { Left = 10, Top = 0, Right = 0, Bottom = 0, },
+                        ZIndex = 1,
+                        BackColor = Color.FromHex("#CFAFAF")
+                    }
+                });
+            Cards.Enqueue(
+                new Card
+                {
+                    EnglishText = "among",
+                    RussianText = "среди, между",
+                    DisplayOptions = new CartDisplayOptions
+                    {
+                        Margin = new Thickness { Left = 30, Top = 30, Right = 0, Bottom = 0, },
+                        ZIndex = 2,
+                        BackColor = Color.FromHex("#F95F62"),
+                    }
+                });
+            Cards.Enqueue(
+               new Card
+               {
+                   EnglishText = "aware",
+                   RussianText = "осведомленный, сведущий, сознательный",
+                   DisplayOptions = new CartDisplayOptions
+                   {
+                       Margin = new Thickness { Left = 30, Top = 30, Right = 0, Bottom = 0, },
+                       ZIndex = 2,
+                       BackColor = Color.FromHex("#DBA9A9"),
+                   }
+               });
+            Cards.Enqueue(
+               new Card
+               {
+                   EnglishText = "bloat",
+                   RussianText = "раздуваться",
+                   DisplayOptions = new CartDisplayOptions
+                   {
+                       Margin = new Thickness { Left = 30, Top = 30, Right = 0, Bottom = 0, },
+                       ZIndex = 2,
+                       BackColor = Color.FromHex("#C67171"),
+                   }
+               });
+        }
     }
 }
