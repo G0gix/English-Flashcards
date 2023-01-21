@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="English_Flashcards.MainPage"
+             xmlns:local="clr-namespace:English_Flashcards.Views.Controls"
              xmlns:viewmodels="clr-namespace:English_Flashcards.ViewModels"
              xmlns:models="clr-namespace:English_Flashcards.Models"
              Title="{Binding Title}"
@@ -26,17 +27,18 @@
             <Label Text="Счет" FontSize="25"/>
             <StackLayout Margin="0,10,0,0" Orientation="Horizontal">
                 <Label Text="Правильно:" FontSize="20" />
-                <Label Text="0" TextColor="LightGreen" 
+                <Label Text="{Binding UserScore.Correct}" TextColor="LightGreen" 
                        FontSize="20"
                        Margin="10,0,0,0"
                        />
             </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Не правильно:" FontSize="20" />
-                <Label Text="0" 
+                <Label Text="{Binding UserScore.Wrong}" 
                        Margin="10,0,0,0"
                        FontSize="20" 
                        TextColor="#D22F47" />
+                <local:ScoreViewPage />
             </StackLayout>
         </StackLayout>
             <StackLayout Grid.Column="1"

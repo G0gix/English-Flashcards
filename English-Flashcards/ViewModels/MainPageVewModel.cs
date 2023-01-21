@@ -21,6 +21,8 @@ namespace English_Flashcards.ViewModels
             Cards.Enqueue(DisplayedCard);
             DisplayedCard.DisplayOptions.ShowAnswer = false;
             DisplayedCard = Cards.Dequeue();
+
+            UserScore.Wrong++;
         }
         #endregion
 
@@ -36,6 +38,7 @@ namespace English_Flashcards.ViewModels
                 return;
             }
 
+            UserScore.Correct++;
             DisplayedCard = Cards.Dequeue();
         }
 
@@ -69,10 +72,11 @@ namespace English_Flashcards.ViewModels
             Cards = new Queue<Card>();
             Test();
 
-
+            UserScore = new Score();
              DisplayedCard = Cards.Dequeue();
             #endregion
         }
+
         #region Properties
         #region Card - DisplayedCard 
         /// <summary>
@@ -89,6 +93,24 @@ namespace English_Flashcards.ViewModels
             set => Set(ref _DisplayedCard, value);
         }
         #endregion
+
+
+        #region Score - UserScore 
+        /// <summary>
+        /// 
+        /// </summary>
+        private Score _UserScore;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Score UserScore
+        {
+            get { return _UserScore; }
+            set => Set(ref _UserScore, value);
+        }
+        #endregion
+
 
         #region string - Title 
         /// <summary>
