@@ -48,11 +48,11 @@
                      Margin="88,40,0,40"
                      WidthRequest="500"
                      >
-            <Button Text="Не знаю" BackgroundColor="#D22F47" WidthRequest="230" HeightRequest="50" TextColor="White"
+            <Button Text="Не знаю" BackgroundColor="#D22F47" WidthRequest="245" HeightRequest="50" TextColor="White"
                     Margin="0,0,10,0"
                     Command="{Binding RepeatCardCommand}"
                     />
-            <Button Text="Знаю" BackgroundColor="LightGreen" WidthRequest="230" HeightRequest="50" TextColor="White"
+            <Button Text="Знаю" BackgroundColor="LightGreen" WidthRequest="245" HeightRequest="50" TextColor="White"
                     Command="{Binding CardDoneCommand}"
                     />
         </StackLayout>
