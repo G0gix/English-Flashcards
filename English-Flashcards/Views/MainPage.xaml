@@ -9,12 +9,40 @@
     <ContentPage.BindingContext>
         <viewmodels:MainPageVewModel />
     </ContentPage.BindingContext>
-    <StackLayout Orientation="Vertical"
-                 HorizontalOptions="CenterAndExpand"
-                 VerticalOptions="CenterAndExpand"
-                 >
-        <StackLayout Orientation="Horizontal"
-                    >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+            <StackLayout Grid.Column="0" Grid.Row="0"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                         Margin="30,10,0,0"
+                         >
+            <Label Text="Счет" FontSize="25"/>
+            <StackLayout Margin="0,10,0,0" Orientation="Horizontal">
+                <Label Text="Правильно:" FontSize="20" />
+                <Label Text="0" TextColor="LightGreen" 
+                       FontSize="20"
+                       Margin="10,0,0,0"
+                       />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Не правильно:" FontSize="20" />
+                <Label Text="0" 
+                       Margin="10,0,0,0"
+                       FontSize="20" 
+                       TextColor="#D22F47" />
+            </StackLayout>
+        </StackLayout>
+            <StackLayout Grid.Column="1"
+                         Grid.Row="0"
+                         Orientation="Vertical"
+                        >
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding ShowCardAnswerCommand}" />
             </StackLayout.GestureRecognizers>
@@ -49,21 +77,22 @@
                        IsVisible="{Binding DisplayedCard.DisplayOptions.ShowAnswer}"
                        />
             </StackLayout>
-        </StackLayout>
-        <StackLayout IsVisible="{OnPlatform Android=false, WinUI=true, iOS=false}" Orientation="Horizontal"
+            <StackLayout IsVisible="{OnPlatform Android=false, WinUI=true, iOS=false}" Orientation="Horizontal"
                      VerticalOptions="Center"
                      HorizontalOptions="Center"
-                     Margin="88,40,0,40"
+                     Margin="0,40,0,40"
                      WidthRequest="500"
                      >
-           
-            <Button Text="Не знаю" BackgroundColor="#D22F47" WidthRequest="245" HeightRequest="50" TextColor="White"
+
+                <Button Text="Не знаю" BackgroundColor="#D22F47" WidthRequest="245" HeightRequest="50" TextColor="White"
                     Margin="0,0,10,0"
                     Command="{Binding RepeatCardCommand}"
                     />
-            <Button Text="Знаю" BackgroundColor="LightGreen" WidthRequest="245" HeightRequest="50" TextColor="White"
+                <Button Text="Знаю" BackgroundColor="LightGreen" WidthRequest="245" HeightRequest="50" TextColor="White"
                     Command="{Binding CardDoneCommand}"
                     />
+            </StackLayout>
         </StackLayout>
-    </StackLayout>
+        
+    </Grid>
 </ContentPage>
