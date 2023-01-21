@@ -1,4 +1,5 @@
-﻿using Microsoft.Maui.Graphics;
+﻿using Microsoft.Maui;
+using Microsoft.Maui.Graphics;
 
 namespace English_Flashcards.Models
 {

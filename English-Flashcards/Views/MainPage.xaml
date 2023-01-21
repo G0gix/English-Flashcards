@@ -9,32 +9,52 @@
     <ContentPage.BindingContext>
         <viewmodels:MainPageVewModel />
     </ContentPage.BindingContext>
-    <Grid BindableLayout.ItemsSource="{Binding Cards}">
-        <BindableLayout.ItemTemplate>
-            <DataTemplate>
-                <Grid>
-                    <SwipeView>
-                        <SwipeView.LeftItems>
-                            <SwipeItems Mode="Execute">
-                                <SwipeItem Text="Удалить" BackgroundColor="Gold"/>
-                            </SwipeItems>
-                        </SwipeView.LeftItems>
-                        <StackLayout Margin="{Binding DisplayOptions.Margin}"
-                              WidthRequest="300"
-                              HeightRequest="300"
-                              HorizontalOptions="CenterAndExpand"
-                              VerticalOptions="CenterAndExpand"
-                              BackgroundColor="{Binding DisplayOptions.BackColor}" 
-                            >
-                            <Label Text="{Binding RussianText}" ZIndex="{Binding DisplayOptions.ZIndex}" 
-                                   HorizontalOptions="CenterAndExpand"
-                                   VerticalOptions="CenterAndExpand"
-                                   HorizontalTextAlignment="Center"
-                                   />
-                        </StackLayout>
-                    </SwipeView>
-                </Grid>
-            </DataTemplate>
-        </BindableLayout.ItemTemplate>
-    </Grid>
+    <StackLayout Orientation="Vertical"
+                 HorizontalOptions="CenterAndExpand"
+                 VerticalOptions="CenterAndExpand"
+                 >
+        <StackLayout Orientation="Horizontal"
+                     
+                    >
+            <SwipeView>
+                <SwipeView.LeftItems>
+                    <SwipeItems Mode="Execute">
+                        <SwipeItem Text="Не знаю" BackgroundColor="#D22F47" Command="{Binding RepeatCardCommand}" />
+                    </SwipeItems>
+                </SwipeView.LeftItems>
+                <SwipeView.RightItems>
+                    <SwipeItems>
+                        <SwipeItem Text="Знаю" BackgroundColor="LightGreen" Command="{Binding CardDone}"/>
+                    </SwipeItems>
+                </SwipeView.RightItems>
+            </SwipeView>
+            <StackLayout Orientation="Vertical"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center"
+                         WidthRequest="{OnPlatform Android=300, WinUI=500, iOS=300}"
+                         HeightRequest="{OnPlatform Android=300, WinUI=500, iOS=300}"
+                         BackgroundColor="{Binding DipsplayCard.DisplayOptions.BackColor}"
+                         >
+                <Label Text="{Binding DipsplayCard.EnglishText}" FontSize="50"
+                       HorizontalTextAlignment="Center"
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="CenterAndExpand"
+                       />
+            </StackLayout>
+        </StackLayout>
+        <StackLayout IsVisible="{OnPlatform Android=false, WinUI=true, iOS=false}" Orientation="Horizontal"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Center"
+                     Margin="88,40,0,40"
+                     WidthRequest="500"
+                     >
+            <Button Text="Не знаю" BackgroundColor="#D22F47" WidthRequest="230" HeightRequest="50" TextColor="White"
+                    Margin="0,0,10,0"
+                    Command="{Binding RepeatCardCommand}"
+                    />
+            <Button Text="Знаю" BackgroundColor="LightGreen" WidthRequest="230" HeightRequest="50" TextColor="White"
+                    Command="{Binding CardDoneCommand}"
+                    />
+        </StackLayout>
+    </StackLayout>
 </ContentPage>

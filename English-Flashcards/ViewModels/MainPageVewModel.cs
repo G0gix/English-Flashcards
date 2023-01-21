@@ -1,6 +1,9 @@
 ﻿using English_Flashcards.Infrastructure.Commands;
 using English_Flashcards.Models;
 using English_Flashcards.ViewModels.Base;
+using Microsoft.Maui;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Graphics;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -10,48 +13,37 @@ namespace English_Flashcards.ViewModels
     {
 
         #region Commands
-        #region DeleteCardCommand
-        public ICommand DeleteCardCommand { get; }
-        private bool CanDeleteCardCommandExecute(object p) => true;
-        private async void OnDeleteCardCommandExecute(object p)
+
+        #region RepeatCardCommand
+        public ICommand RepeatCardCommand { get; }
+        private bool CanRepeatCardCommandExecute(object p) => true;
+        private void OnRepeatCardCommandExecute(object p)
         {
-            await Application.Current.MainPage.DisplayAlert("Delete", "Delete", "Ok");
+
         }
         #endregion
 
-
-        #region CardDone Command
-        public ICommand CardDone { get; }
-        private bool CanCardDoneExecute(object p) => true;
-        private async void OnCardDoneExecute(object p)
+        #region CardDoneCommand
+        public ICommand CardDoneCommand { get; }
+        private bool CanCardDoneCommandExecute(object p) => true;
+        private async void OnCardDoneCommandExecute(object p)
         {
             await Application.Current.MainPage.DisplayAlert("Done", "cARD DONE", "Ok");
         }
 
 
         #endregion
-
-
-        #region SwipeCommand
-        public ICommand SwipeCommand { get; }
-        private bool CanSwipeCommandExecute(object p) => true;
-        private async void OnSwipeCommandExecute(object p)
-        {
-            await Application.Current.MainPage.DisplayAlert("Swipe", p.ToString(), "Ok");
-        }
-        #endregion
         #endregion
 
         #region Collections
-        public ObservableCollection<Card> Cards { get; set; }
+        public  static ObservableCollection<Card> Cards { get; set; }
         #endregion
 
         public MainPageVewModel()
         {
             #region Commands
-            SwipeCommand = new LamdaCommand(OnSwipeCommandExecute, CanSwipeCommandExecute);
-            DeleteCardCommand = new LamdaCommand(OnDeleteCardCommandExecute, CanDeleteCardCommandExecute);
-            CardDone = new LamdaCommand(OnCardDoneExecute, CanCardDoneExecute);
+            RepeatCardCommand = new LamdaCommand(OnRepeatCardCommandExecute, CanRepeatCardCommandExecute);
+            CardDoneCommand = new LamdaCommand(OnCardDoneCommandExecute, CanCardDoneCommandExecute);
             #endregion
 
             #region Collections
@@ -74,8 +66,27 @@ namespace English_Flashcards.ViewModels
                     } 
                 },
             };
+
+            DipsplayCard = Cards[1];
             #endregion
         }
+
+
+        #region Card - DipsplayCard 
+        /// <summary>
+        /// 
+        /// </summary>
+        private Card _DipsplayCard;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Card DipsplayCard
+        {
+            get { return _DipsplayCard; }
+            set => Set(ref _DipsplayCard, value);
+        }
+        #endregion
 
 
         #region Properties
