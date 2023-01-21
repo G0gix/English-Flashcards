@@ -1,14 +1,10 @@
 ﻿using English_Flashcards.Infrastructure.Commands;
 using English_Flashcards.Models;
-using English_Flashcards.Models.Base;
 using English_Flashcards.ViewModels.Base;
 using Microsoft.Maui;
-using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace English_Flashcards.ViewModels
 {
@@ -23,6 +19,7 @@ namespace English_Flashcards.ViewModels
         private void OnRepeatCardCommandExecute(object p)
         {
             Cards.Enqueue(DisplayedCard);
+            DisplayedCard.DisplayOptions.ShowAnswer = false;
             DisplayedCard = Cards.Dequeue();
         }
         #endregion
@@ -70,7 +67,7 @@ namespace English_Flashcards.ViewModels
 
             #region Collections
             Cards = new Queue<Card>();
-            Test()
+            Test();
 
 
              DisplayedCard = Cards.Dequeue();
