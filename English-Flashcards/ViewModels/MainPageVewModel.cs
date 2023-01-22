@@ -32,7 +32,10 @@ namespace English_Flashcards.ViewModels
             if (Cards.Count == 0)
             {
                 DisplayedCard= null;
-                await App.Current.MainPage.DisplayAlert("Внимание", "Карты закончились", "Ok");
+                await App.Current.MainPage.DisplayAlert("Внимание", "Карты закончились\n\n" +
+                    "Ваш счет" +
+                    $"\nПравильно: {UserScore.Correct}" +
+                    $"\nНе правильно: {UserScore.Wrong}", "Ok");
                 return;
             }
 
@@ -71,7 +74,7 @@ namespace English_Flashcards.ViewModels
             Test();
 
             UserScore = new Score();
-             DisplayedCard = Cards.Dequeue();
+            DisplayedCard = Cards.Dequeue();
             #endregion
         }
 

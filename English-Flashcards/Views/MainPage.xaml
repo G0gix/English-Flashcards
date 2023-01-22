@@ -59,8 +59,8 @@
                 </SwipeView.RightItems>
             </SwipeView>
             <StackLayout Orientation="Vertical"
-                         HorizontalOptions="Center"
-                         VerticalOptions="Center"
+                         HorizontalOptions="CenterAndExpand"
+                         VerticalOptions="CenterAndExpand"
                          WidthRequest="{OnPlatform Android=300, WinUI=500, iOS=300}"
                          HeightRequest="{OnPlatform Android=300, WinUI=500, iOS=300}"
                          BackgroundColor="{Binding DisplayedCard.DisplayOptions.BackColor}"
@@ -68,13 +68,14 @@
                 <Label Text="{Binding DisplayedCard.EnglishText}" FontSize="50"
                        HorizontalTextAlignment="Center"
                        HorizontalOptions="CenterAndExpand"
-                       VerticalOptions="CenterAndExpand"
+                       VerticalOptions="Center"
+                       Margin="0,180,0,0"
                        />
                 <Label Text="{Binding DisplayedCard.RussianText}" 
+                       FontSize="25"
                        HorizontalTextAlignment="Center"
-                       HorizontalOptions="CenterAndExpand"
-                       VerticalOptions="CenterAndExpand"
                        IsVisible="{Binding DisplayedCard.DisplayOptions.ShowAnswer}"
+                       TextColor="White"
                        />
             </StackLayout>
             <StackLayout IsVisible="{OnPlatform Android=false, WinUI=true, iOS=false}" Orientation="Horizontal"
