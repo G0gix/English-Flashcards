@@ -1,5 +1,6 @@
 ﻿using English_Flashcards.Infrastructure.Commands;
 using English_Flashcards.Models;
+using English_Flashcards.Services;
 using English_Flashcards.ViewModels.Base;
 using System.Windows.Input;
 
@@ -53,12 +54,13 @@ namespace English_Flashcards.ViewModels
         }
         #endregion
 
-
         #endregion
         #endregion
 
         #region Collections
         public  static Queue<Card> Cards { get; set; }
+        
+        
         #endregion
 
         public MainPageVewModel()
@@ -70,8 +72,8 @@ namespace English_Flashcards.ViewModels
             #endregion
 
             #region Collections
-            Cards = new Queue<Card>();
-            Test();
+            
+            Task.Run(async () => { await Test(); }).Wait();
 
             UserScore = new Score();
             DisplayedCard = Cards.Dequeue();
@@ -131,56 +133,13 @@ namespace English_Flashcards.ViewModels
         #endregion
 
 
-        static void Test()
+        static async Task Test()
         {
-            Cards.Enqueue(
-                new Card
-                {
-                    RussianText = "algorithm",
-                    EnglishText = "алгоритм",
-                    DisplayOptions = new CartDisplayOptions
-                    {
-                        Margin = new Thickness { Left = 10, Top = 0, Right = 0, Bottom = 0, },
-                        ZIndex = 1,
-                        BackColor = Color.FromHex("#CFAFAF")
-                    }
-                });
-            Cards.Enqueue(
-                new Card
-                {
-                    EnglishText = "among",
-                    RussianText = "среди, между",
-                    DisplayOptions = new CartDisplayOptions
-                    {
-                        Margin = new Thickness { Left = 30, Top = 30, Right = 0, Bottom = 0, },
-                        ZIndex = 2,
-                        BackColor = Color.FromHex("#F95F62"),
-                    }
-                });
-            Cards.Enqueue(
-               new Card
-               {
-                   EnglishText = "aware",
-                   RussianText = "осведомленный, сведущий, сознательный",
-                   DisplayOptions = new CartDisplayOptions
-                   {
-                       Margin = new Thickness { Left = 30, Top = 30, Right = 0, Bottom = 0, },
-                       ZIndex = 2,
-                       BackColor = Color.FromHex("#DBA9A9"),
-                   }
-               });
-            Cards.Enqueue(
-               new Card
-               {
-                   EnglishText = "bloat",
-                   RussianText = "раздуваться",
-                   DisplayOptions = new CartDisplayOptions
-                   {
-                       Margin = new Thickness { Left = 30, Top = 30, Right = 0, Bottom = 0, },
-                       ZIndex = 2,
-                       BackColor = Color.FromHex("#C67171"),
-                   }
-               });
+            using var stream = await FileSystem.OpenAppPackageFileAsync("GoogleSheetsSecret.json");
+            
+            GoogleSheetService googleSheetService = new GoogleSheetService(stream);
+            var Data =  await googleSheetService.GetCards();
+            Cards = new Queue<Card>(Data);
         }
     }
 }
