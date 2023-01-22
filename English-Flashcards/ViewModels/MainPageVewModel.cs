@@ -32,12 +32,13 @@ namespace English_Flashcards.ViewModels
         {
             if (Cards.Count == 0)
             {
-                DisplayedCard= null;
                 await App.Current.MainPage.DisplayAlert("Внимание", "Карты закончились\n\n" +
                     "Ваш счет" +
                     $"\nПравильно: {UserScore.Correct}" +
                     $"\nНе правильно: {UserScore.Wrong}", "Ok");
-                return;
+
+                SheetRowId += 10;
+                await FillCards();
             }
 
             UserScore.Correct++;
@@ -57,6 +58,8 @@ namespace English_Flashcards.ViewModels
         #endregion
         #endregion
 
+        private static GoogleSheetService GoogleSheetService;
+
         #region Collections
         public  static Queue<Card> Cards { get; set; }
         
@@ -73,7 +76,10 @@ namespace English_Flashcards.ViewModels
 
             #region Collections
             
-            Task.Run(async () => { await Test(); }).Wait();
+            Task.Run(async () => { 
+                await CreateGoogleSheetService();
+                await FillCards();
+            }).Wait();
 
             UserScore = new Score();
             DisplayedCard = Cards.Dequeue();
@@ -97,6 +103,7 @@ namespace English_Flashcards.ViewModels
         }
         #endregion
 
+        public static int SheetRowId { get; set; } = 10;
 
         #region Score - UserScore 
         /// <summary>
@@ -132,13 +139,15 @@ namespace English_Flashcards.ViewModels
         #endregion
         #endregion
 
-
-        static async Task Test()
+        static async Task CreateGoogleSheetService()
         {
             using var stream = await FileSystem.OpenAppPackageFileAsync("GoogleSheetsSecret.json");
-            
-            GoogleSheetService googleSheetService = new GoogleSheetService(stream);
-            var Data =  await googleSheetService.GetCards();
+            GoogleSheetService = new GoogleSheetService(stream);
+        }
+
+        static async Task FillCards()
+        {
+            var Data =  await GoogleSheetService.GetCards(SheetRowId);
             Cards = new Queue<Card>(Data);
         }
     }
