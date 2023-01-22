@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="English_Flashcards.MainPage"
-             xmlns:local="clr-namespace:English_Flashcards.Views.Controls"
              xmlns:viewmodels="clr-namespace:English_Flashcards.ViewModels"
              xmlns:models="clr-namespace:English_Flashcards.Models"
              Title="{Binding Title}"
@@ -38,7 +37,6 @@
                        Margin="10,0,0,0"
                        FontSize="20" 
                        TextColor="#D22F47" />
-                <local:ScoreViewPage />
             </StackLayout>
         </StackLayout>
             <StackLayout Grid.Column="1"

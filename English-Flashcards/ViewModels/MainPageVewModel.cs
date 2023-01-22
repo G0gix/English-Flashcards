@@ -1,9 +1,6 @@
 ﻿using English_Flashcards.Infrastructure.Commands;
 using English_Flashcards.Models;
 using English_Flashcards.ViewModels.Base;
-using Microsoft.Maui;
-using Microsoft.Maui.Graphics;
-using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace English_Flashcards.ViewModels
@@ -16,11 +13,12 @@ namespace English_Flashcards.ViewModels
         #region RepeatCardCommand
         public ICommand RepeatCardCommand { get; }
         private bool CanRepeatCardCommandExecute(object p) => true;
-        private void OnRepeatCardCommandExecute(object p)
+        private async void OnRepeatCardCommandExecute(object p)
         {
             Cards.Enqueue(DisplayedCard);
             DisplayedCard.DisplayOptions.ShowAnswer = false;
             DisplayedCard = Cards.Dequeue();
+
 
             UserScore.Wrong++;
         }
