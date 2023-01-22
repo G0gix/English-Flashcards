@@ -12,17 +12,17 @@ namespace English_Flashcards.Services
         #region Colors
         private static List<string> ColorsList = new List<string>
         {
-            "#FFCCCC",
-            "#EEC3BD",
-            "#AEA4A2",
-            "#C07A65",
-            "#FF8962",
-            "#B78D6F",
-            "#E2E2CF",
-            "#BCC37A",
-            "#E9FBA6",
-            "#64C2C2",
-            "#0EBFE9",
+            "#8B6969",
+            "#DF9D9D",
+            "#838EDE",
+            "#A8ACFF",
+            "#5959AB",
+            "#3B3178",
+            "#9370DB",
+            "#5E2D79",
+            "#8B668B",
+            "#38B0DE",
+            "#5F9F9F",
         };
         #endregion
 
@@ -41,12 +41,12 @@ namespace English_Flashcards.Services
             googleSheetsManager = new GoogleSheetsManager(googleCredential);
         }
 
-        internal async Task<IEnumerable<Card>> GetCards()
+        internal async Task<IEnumerable<Card>> GetCards(int sheetRowId = 10)
         {
             GoogleSheetOptions googleSheetOptions = new GoogleSheetOptions
             {
                 SheetId = "1oj3VIgzIFTV7vr3X8yQhgFj88ygU0oK_v8gnaJM7elw",
-                SheetRange = "Dictionary!A2:B",
+                SheetRange = $"Dictionary!A2:B{sheetRowId.ToString()}",
             };
 
             var value = await googleSheetsManager.Read(googleSheetOptions);
