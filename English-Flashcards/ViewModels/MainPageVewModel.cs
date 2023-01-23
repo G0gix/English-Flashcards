@@ -31,13 +31,17 @@ namespace English_Flashcards.ViewModels
         {
             if (Cards.Count == 0)
             {
+                DisplayedCard = null;
+                StartSheetRowId += 10;
+
+                IsBusy = true;
+                await FillCards(StartSheetRowId);
+                IsBusy = false;
+
                 await App.Current.MainPage.DisplayAlert("Внимание", "Карты закончились\n\n" +
                     "Ваш счет" +
                     $"\nПравильно: {UserScore.Correct}" +
                     $"\nНе правильно: {UserScore.Wrong}", "Ok");
-
-                SheetRowId += 10;
-                await FillCards();
             }
 
             UserScore.Correct++;
@@ -47,7 +51,7 @@ namespace English_Flashcards.ViewModels
 
         #region ShowCardAnswer
         public ICommand ShowCardAnswerCommand { get; }
-        private bool CanShowCardAnswerCommandExecute(object p) => true;
+        private bool CanShowCardAnswerCommandExecute(object p) => !IsBusy;
         private async void OnShowCardAnswerCommandExecute(object p)
         {
             DisplayedCard.DisplayOptions.ShowAnswer = true;
@@ -57,7 +61,6 @@ namespace English_Flashcards.ViewModels
         #endregion
         #endregion
 
-        private static GoogleSheetService GoogleSheetService;
 
         #region Collections
         public  static Queue<Card> Cards { get; set; }
@@ -76,7 +79,6 @@ namespace English_Flashcards.ViewModels
             #region Collections
             
             Task.Run(async () => { 
-                await CreateGoogleSheetService();
                 await FillCards();
             }).Wait();
 
@@ -88,12 +90,12 @@ namespace English_Flashcards.ViewModels
         #region Properties
         #region Card - DisplayedCard 
         /// <summary>
-        /// 
+        /// The card to show in the view
         /// </summary>
         private Card _DisplayedCard;
 
         /// <summary>
-        /// 
+        /// The card to show in the view
         /// </summary>
         public Card DisplayedCard
         {
@@ -102,16 +104,16 @@ namespace English_Flashcards.ViewModels
         }
         #endregion
 
-        public static int SheetRowId { get; set; } = 10;
+        public static uint StartSheetRowId { get; set; } = 0;
 
         #region Score - UserScore 
         /// <summary>
-        /// 
+        /// User account during the knowledge test
         /// </summary>
         private Score _UserScore;
 
         /// <summary>
-        /// 
+        /// User account during the knowledge test
         /// </summary>
         public Score UserScore
         {
@@ -138,15 +140,10 @@ namespace English_Flashcards.ViewModels
         #endregion
         #endregion
 
-        static async Task CreateGoogleSheetService()
+        static async Task FillCards(uint startRowId = 2)
         {
-            using var stream = await FileSystem.OpenAppPackageFileAsync("GoogleSheetsSecret.json");
-            GoogleSheetService = new GoogleSheetService(stream);
-        }
-
-        static async Task FillCards()
-        {
-            var Data =  await GoogleSheetService.GetCards(SheetRowId);
+            CardService cardService = new CardService();
+            var Data = await cardService.GetCards(startRowId);
             Cards = new Queue<Card>(Data);
         }
     }
