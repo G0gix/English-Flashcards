@@ -13,13 +13,12 @@ namespace English_Flashcards.ViewModels
 
         #region RepeatCardCommand
         public ICommand RepeatCardCommand { get; }
-        private bool CanRepeatCardCommandExecute(object p) => true;
+        private bool CanRepeatCardCommandExecute(object p) => !IsBusy;
         private async void OnRepeatCardCommandExecute(object p)
         {
             Cards.Enqueue(DisplayedCard);
             DisplayedCard.DisplayOptions.ShowAnswer = false;
             DisplayedCard = Cards.Dequeue();
-
 
             UserScore.Wrong++;
         }
@@ -27,7 +26,7 @@ namespace English_Flashcards.ViewModels
 
         #region CardDoneCommand
         public ICommand CardDoneCommand { get; }
-        private bool CanCardDoneCommandExecute(object p) => true;
+        private bool CanCardDoneCommandExecute(object p) => !IsBusy;
         private async void OnCardDoneCommandExecute(object p)
         {
             if (Cards.Count == 0)

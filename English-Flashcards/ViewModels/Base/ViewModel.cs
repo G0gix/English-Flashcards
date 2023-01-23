@@ -39,7 +39,5 @@ namespace English_Flashcards.ViewModels.Base
             set => Set(ref _IsBusy, value);
         }
         #endregion
-
-
     }
 }

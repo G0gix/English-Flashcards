@@ -133,8 +133,8 @@
             </StackLayout>
         </StackLayout>
         <ActivityIndicator x:Name="Loader"
-                           IsRunning="{Binding IsBusy}" 
                            IsVisible="{Binding IsBusy}"
+                           IsRunning="True" 
                            VerticalOptions="Center" 
                            HorizontalOptions="Center" 
                            WidthRequest="80"

@@ -21,9 +21,7 @@ namespace English_Flashcards.Models
 		}
         #endregion
 
-
-
-        #region ushort - Wrong 
+		#region ushort - Wrong 
         /// <summary>
         /// 
         /// </summary>
