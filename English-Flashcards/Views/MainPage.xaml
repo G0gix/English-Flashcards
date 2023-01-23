@@ -4,30 +4,56 @@
              x:Class="English_Flashcards.MainPage"
              xmlns:viewmodels="clr-namespace:English_Flashcards.ViewModels"
              xmlns:models="clr-namespace:English_Flashcards.Models"
-             Title="{Binding Title}"
              >
     <ContentPage.BindingContext>
         <viewmodels:MainPageVewModel />
     </ContentPage.BindingContext>
-    <StackLayout>
-        <StackLayout HorizontalOptions="Start"
-                         VerticalOptions="Start"
-                         Margin="30,10,0,0"
-                         IsVisible="{OnPlatform Android=false, WinUI=true,iOS=false}"
-                        >
-                <Label Text="Счет" FontSize="25"/>
+    <Shell.TitleView>
+        <StackLayout HorizontalOptions="CenterAndExpand"
+                     VerticalOptions="CenterAndExpand"
+                     >
+            <Label Text="{Binding Title}" 
+                   FontSize="{OnPlatform Android=15, iOS=15, WinUI=25, Default=15}"
+                   TextColor="White"
+                   >
+                <Label.Margin>
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android, iOS" Value="0,0,0,0" />
+                        <On Platform="WinUI, Default" Value="30,10,0,0" />
+                    </OnPlatform>
+                </Label.Margin>
+            </Label>
+        </StackLayout>
+    </Shell.TitleView>
+    <StackLayout x:Name="MainPanel">
+        <StackLayout.Orientation>
+            <OnPlatform x:TypeArguments="StackOrientation">
+                <On Platform="Android, iOS" Value="Vertical"/>
+                <On Platform="WinUI" Value="Horizontal"/>
+            </OnPlatform>
+        </StackLayout.Orientation>
+        <StackLayout x:Name="ScorePanel"
+                     HorizontalOptions="Start"
+                     VerticalOptions="Start"
+                     Margin="30,10,0,0"
+                     >
+                <Label Text="Счет" FontSize="{OnPlatform Android=20, iOS=10, WinUI=25, Default=20 }"/>
                 <StackLayout Margin="0,10,0,0" Orientation="Horizontal">
-                    <Label Text="Правильно:" FontSize="20" />
+                    <Label Text="Правильно:" 
+                           FontSize="{OnPlatform Android=15, iOS=15, WinUI=20, Default=10}" 
+                           />
                     <Label Text="{Binding UserScore.Correct}" TextColor="LightGreen" 
-                           FontSize="20"
+                           FontSize="{OnPlatform Android=15, iOS=15, WinUI=20, Default=10}"
                            Margin="10,0,0,0"
                            />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal">
-                    <Label Text="Не правильно:" FontSize="20" />
+                    <Label Text="Не правильно:" 
+                           FontSize="{OnPlatform Android=15, iOS=15, WinUI=20, Default=10}"
+                           />
                     <Label Text="{Binding UserScore.Wrong}" 
+                           FontSize="{OnPlatform Android=15, iOS=15, WinUI=20, Default=10}"
                            Margin="10,0,0,0"
-                           FontSize="20" 
                            TextColor="#D22F47" />
                 </StackLayout>
             </StackLayout>
@@ -36,44 +62,53 @@
                      >
             <StackLayout.Margin>
                 <OnPlatform x:TypeArguments="Thickness">
-                    <On Platform="iOS, Android" Value="0,20,0,0" />
+                    <On Platform="iOS, Android" Value="0,5,0,0" />
                     <On Platform="WinUI" Value="0,20,0,0" />
                 </OnPlatform>
             </StackLayout.Margin>
                 <SwipeView>
-                <SwipeView.LeftItems>
-                    <SwipeItems Mode="Execute">
-                        <SwipeItem Text="Не знаю" BackgroundColor="#D22F47" Command="{Binding RepeatCardCommand}" />
-                    </SwipeItems>
-                </SwipeView.LeftItems>
-                <SwipeView.RightItems>
-                    <SwipeItems Mode="Execute">
-                        <SwipeItem Text="Знаю" BackgroundColor="LightGreen" Command="{Binding CardDoneCommand}"/>
-                    </SwipeItems>
-                </SwipeView.RightItems>
-                <StackLayout Orientation="Vertical"
-                         HorizontalOptions="CenterAndExpand"
-                         VerticalOptions="CenterAndExpand"
-                         WidthRequest="{OnPlatform Android=300, WinUI=500, iOS=300,Default=500}"
-                         HeightRequest="{OnPlatform Android=300, WinUI=500, iOS=300, Default=500}"
-                         BackgroundColor="{Binding DisplayedCard.DisplayOptions.BackColor}"
-                         >
+                    
+                    <SwipeView.LeftItems>
+                        <SwipeItems Mode="Execute">
+                            <SwipeItem Text="Не знаю" BackgroundColor="#D22F47" Command="{Binding RepeatCardCommand}" />
+                        </SwipeItems>
+                    </SwipeView.LeftItems>
+                    <SwipeView.RightItems>
+                        <SwipeItems Mode="Execute">
+                            <SwipeItem Text="Знаю" BackgroundColor="LightGreen" Command="{Binding CardDoneCommand}"/>
+                        </SwipeItems>
+                    </SwipeView.RightItems>
+                <StackLayout x:Name="CardPanel"
+                             Orientation="Vertical"
+                             HorizontalOptions="CenterAndExpand"
+                             VerticalOptions="CenterAndExpand"
+                             WidthRequest="{OnPlatform Android=300, WinUI=500, iOS=300,Default=500}"
+                             HeightRequest="{OnPlatform Android=300, WinUI=500, iOS=300, Default=500}"
+                             BackgroundColor="{Binding DisplayedCard.DisplayOptions.BackColor}"
+                             >
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShowCardAnswerCommand}" />
                     </StackLayout.GestureRecognizers>
                     <Label Text="{Binding DisplayedCard.EnglishText}" 
-                       FontSize="50"
-                       HorizontalTextAlignment="Center"
-                       HorizontalOptions="CenterAndExpand"
-                       VerticalOptions="Center"
-                       />
-                    <!--Margin="0,180,0,0"-->
+                           FontSize="{OnPlatform Android=40, iOS=40, WinUI=50, Default=20}"
+                           TextColor="White"
+                           HorizontalTextAlignment="Center"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="Center"
+                           >
+                        <Label.Margin>
+                            <OnPlatform x:TypeArguments="Thickness">
+                                <On Platform="iOS, Android" Value="0,60,0,0" />
+                                <On Platform="WinUI" Value="0,180,0,0" />
+                            </OnPlatform>
+                        </Label.Margin>
+                    </Label>
                     <Label Text="{Binding DisplayedCard.RussianText}" 
-                       FontSize="25"
-                       HorizontalTextAlignment="Center"
-                       IsVisible="{Binding DisplayedCard.DisplayOptions.ShowAnswer}"
-                       TextColor="White"
-                       />
+                           FontSize="{OnPlatform Android=20,iOS=20,WinUI=25,Default=20}"
+                           HorizontalTextAlignment="Center"
+                           IsVisible="{Binding DisplayedCard.DisplayOptions.ShowAnswer}"
+                           TextColor="White"
+                           />
                 </StackLayout>
             </SwipeView>
             <StackLayout IsVisible="{OnPlatform Android=false, WinUI=true, iOS=false}" Orientation="Horizontal"
@@ -82,17 +117,16 @@
                      Margin="0,40,0,40"
                      WidthRequest="500"
                      >
-
                 <Button Text="Не знаю" BackgroundColor="#D22F47" WidthRequest="245" HeightRequest="50" TextColor="White"
                     Margin="0,0,10,0"
                     Command="{Binding RepeatCardCommand}"
-                />
+                    />
                 <Button Text="Знаю" BackgroundColor="LightGreen" 
                     WidthRequest="245" 
                     HeightRequest="50" 
                     TextColor="White"
                     Command="{Binding CardDoneCommand}"
-                />
+                    />
             </StackLayout>
         </StackLayout>
     </StackLayout>
