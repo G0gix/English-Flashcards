@@ -24,5 +24,22 @@ namespace English_Flashcards.ViewModels.Base
         }
 
 
+        #region bool - IsBusy 
+        /// <summary>
+        /// Determines if the application is busy with a long running operation
+        /// </summary>
+        private bool _IsBusy;
+
+        /// <summary>
+        /// Determines if the application is busy with a long running operation
+        /// </summary>
+        public bool IsBusy
+        {
+            get { return _IsBusy; }
+            set => Set(ref _IsBusy, value);
+        }
+        #endregion
+
+
     }
 }
