@@ -54,9 +54,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Resource Include="Resources\Raw\GoogleSheetsSecret.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Resource>
+	  <ProjectReference Include="..\..\..\Other apps\Ordinatum-libraries\DotnetCustomLibraries\GoogleAPI-Library\GoogleAPI-Library.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
