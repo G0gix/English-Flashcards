@@ -1,16 +1,15 @@
 ﻿using Google.Apis.Sheets.v4;
 using GoogleAPI_Library.Models;
 using GoogleAPI_Library;
-using System.IO;
 using English_Flashcards.Models;
 
-namespace English_Flashcards.Services
+namespace English_Flashcards.Services.Cards
 {
     class CardService
     {
         private readonly GoogleSheetsManager googleSheetsManager;
         internal static uint SelectionStep { get; set; } = 10;
-        private  static uint Step = SelectionStep;
+        private static uint Step = SelectionStep;
 
         #region Colors
         private static List<string> ColorsList = new List<string>
@@ -32,8 +31,9 @@ namespace English_Flashcards.Services
         public CardService()
         {
             Stream SecretStream = null;
-            
-            Task.Run(async () => {
+
+            Task.Run(async () =>
+            {
                 SecretStream = await FileSystem.OpenAppPackageFileAsync("GoogleSheetsSecret.json");
             }).Wait();
 
@@ -82,7 +82,7 @@ namespace English_Flashcards.Services
                     });
                 }
             });
-            
+
             Step += SelectionStep;
             return cards;
         }
