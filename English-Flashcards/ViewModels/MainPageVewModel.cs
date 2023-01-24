@@ -3,6 +3,7 @@ using English_Flashcards.Infrastructure.Commands;
 using English_Flashcards.Models;
 using English_Flashcards.Services.Cards;
 using English_Flashcards.ViewModels.Base;
+using GoogleAPI_Library.Exceptions;
 using System.Collections.Specialized;
 using System.Windows.Input;
 
@@ -62,7 +63,6 @@ namespace English_Flashcards.ViewModels
         #endregion
         #endregion
 
-
         #region Collections
         public  static ObservableQueue<Card> Cards { get; set; }
         #endregion
@@ -76,26 +76,22 @@ namespace English_Flashcards.ViewModels
             #endregion
 
             #region Collections
+            
+            #region Cards
             Cards = new ObservableQueue<Card>();
 
-            Task.Run(async () => { 
+            Task.Run(async () =>
+            {
                 await FillCards();
             }).Wait();
 
             Cards.CollectionChanged += UpdateCount;
+            #endregion
+
+            #endregion
 
             UserScore = new Score();
             DisplayedCard = Cards.Dequeue();
-            
-            #endregion
-        }
-
-        private void UpdateCount(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (sender is ObservableQueue<Card> queue)
-            {
-                CardsCount = queue.Count;
-            }
         }
 
         #region Properties
@@ -136,12 +132,12 @@ namespace English_Flashcards.ViewModels
 
         #region int - CardsCount 
         /// <summary>
-        /// 
+        /// Specifies the number of cards in the queue
         /// </summary>
         private int _CardsCount;
 
         /// <summary>
-        /// 
+        /// Specifies the number of cards in the queue
         /// </summary>
         public int CardsCount
         {
@@ -168,15 +164,39 @@ namespace English_Flashcards.ViewModels
         #endregion
         #endregion
 
+        #region Methods
         static async Task FillCards(uint startRowId = 2)
         {
-            CardService cardService = new CardService();
-            var Data = await cardService.GetCards(startRowId);
-
-            foreach (var item in Data)
+            try
             {
-                Cards.Enqueue(item);
+                CardService cardService = new CardService();
+                var Data = await cardService.GetCards(startRowId);
+
+                foreach (var item in Data)
+                {
+                    Cards.Enqueue(item);
+                }
+            }
+            catch (GoogleSheetsException googleEx)
+            {
+                await Application.Current.MainPage.DisplayPromptAsync("Ошибка!", "Возникла ошибка доступа к Google таблице." +
+                        "\nПожалуйста проверьте ваше интернет соединение" +
+                        $"\n\nТекст ошибка {googleEx.Message}", "Ok");
+            }
+            catch(Exception ex)
+            {
+                await Application.Current.MainPage.DisplayPromptAsync("Ошибка!", "Возникала ошибка при вополнении" +
+                    $"\n\n Текст ошибки {ex.Message}", "Ok");
             }
         }
+
+        private void UpdateCount(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (sender is ObservableQueue<Card> queue)
+            {
+                CardsCount = queue.Count;
+            }
+        } 
+        #endregion
     }
 }

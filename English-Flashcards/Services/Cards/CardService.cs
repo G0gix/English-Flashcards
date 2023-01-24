@@ -2,6 +2,7 @@
 using GoogleAPI_Library.Models;
 using GoogleAPI_Library;
 using English_Flashcards.Models;
+using GoogleAPI_Library.Exceptions;
 
 namespace English_Flashcards.Services.Cards
 {
@@ -30,61 +31,83 @@ namespace English_Flashcards.Services.Cards
 
         public CardService()
         {
-            Stream SecretStream = null;
-
-            Task.Run(async () =>
+            try
             {
-                SecretStream = await FileSystem.OpenAppPackageFileAsync("GoogleSheetsSecret.json");
-            }).Wait();
+                Stream SecretStream = null;
 
-            GoogleCredentialOptions_Stream googleCredential = new GoogleCredentialOptions_Stream
+                Task.Run(async () =>
+                {
+                    SecretStream = await FileSystem.OpenAppPackageFileAsync("GoogleSheetsSecret.json");
+                }).Wait();
+
+                GoogleCredentialOptions_Stream googleCredential = new GoogleCredentialOptions_Stream
+                {
+                    ApplicationName = "Dictionary-Translator",
+                    Scopes = new string[] { SheetsService.Scope.Spreadsheets },
+                    ClientSecretStream = SecretStream
+                };
+
+                googleSheetsManager = new GoogleSheetsManager(googleCredential);
+            }
+            catch (GoogleSheetsException)
             {
-                ApplicationName = "Dictionary-Translator",
-                Scopes = new string[] { SheetsService.Scope.Spreadsheets },
-                ClientSecretStream = SecretStream
-            };
-
-            googleSheetsManager = new GoogleSheetsManager(googleCredential);
+                throw;
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
 
         internal async Task<IEnumerable<Card>> GetCards(uint startRowId = 2)
         {
-            GoogleSheetOptions googleSheetOptions = new GoogleSheetOptions
+            try
             {
-                SheetId = "1oj3VIgzIFTV7vr3X8yQhgFj88ygU0oK_v8gnaJM7elw",
-                SheetRange = $"Dictionary!A{startRowId}:B{Step}",
-            };
-
-            var value = await googleSheetsManager.Read(googleSheetOptions);
-
-            List<Card> cards = new List<Card>();
-
-            await Task.Run(async () =>
-            {
-                Random randomColor = new Random();
-
-                foreach (var item in value)
+                GoogleSheetOptions googleSheetOptions = new GoogleSheetOptions
                 {
-                    //Delay to random class
-                    await Task.Delay(1);
+                    SheetId = "1oj3VIgzIFTV7vr3X8yQhgFj88ygU0oK_v8gnaJM7elw",
+                    SheetRange = $"Dictionary!A{startRowId}:B{Step}",
+                };
 
-                    string colorHex = ColorsList[randomColor.Next(0, ColorsList.Count)] ?? "#FF0000";
-                    Color cardColor = Color.FromHex(colorHex);
+                var value = await googleSheetsManager.Read(googleSheetOptions);
 
-                    cards.Add(new Card
+                List<Card> cards = new List<Card>();
+
+                await Task.Run(async () =>
+                {
+                    Random randomColor = new Random();
+
+                    foreach (var item in value)
                     {
-                        EnglishText = item[0].ToString(),
-                        RussianText = item[1].ToString(),
-                        DisplayOptions = new CartDisplayOptions
-                        {
-                            BackColor = cardColor
-                        }
-                    });
-                }
-            });
+                        //Delay to random class
+                        await Task.Delay(1);
 
-            Step += SelectionStep;
-            return cards;
+                        string colorHex = ColorsList[randomColor.Next(0, ColorsList.Count)] ?? "#FF0000";
+                        Color cardColor = Color.FromHex(colorHex);
+
+                        cards.Add(new Card
+                        {
+                            EnglishText = item[0].ToString(),
+                            RussianText = item[1].ToString(),
+                            DisplayOptions = new CartDisplayOptions
+                            {
+                                BackColor = cardColor
+                            }
+                        });
+                    }
+                });
+
+                Step += SelectionStep;
+                return cards;
+            }
+            catch (GoogleSheetsException)
+            {
+                throw;
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
     }
 }
