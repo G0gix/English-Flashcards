@@ -15,7 +15,8 @@ namespace English_Flashcards.ViewModels
         #region Commands
         #region RepeatCardCommand
         public ICommand RepeatCardCommand { get; }
-        private bool CanRepeatCardCommandExecute(object p) => !IsBusy;
+        private bool CanRepeatCardCommandExecute(object p) => IsCardCommandCanExecute();
+
         private async void OnRepeatCardCommandExecute(object p)
         {
             Cards.Enqueue(DisplayedCard);
@@ -28,7 +29,7 @@ namespace English_Flashcards.ViewModels
 
         #region CardDoneCommand
         public ICommand CardDoneCommand { get; }
-        private bool CanCardDoneCommandExecute(object p) => !IsBusy;
+        private bool CanCardDoneCommandExecute(object p) => IsCardCommandCanExecute();
         private async void OnCardDoneCommandExecute(object p)
         {
             if (Cards.Count == 0)
@@ -53,7 +54,7 @@ namespace English_Flashcards.ViewModels
 
         #region ShowCardAnswer
         public ICommand ShowCardAnswerCommand { get; }
-        private bool CanShowCardAnswerCommandExecute(object p) => !IsBusy;
+        private bool CanShowCardAnswerCommandExecute(object p) => IsCardCommandCanExecute();
         private async void OnShowCardAnswerCommandExecute(object p)
         {
             DisplayedCard.DisplayOptions.ShowAnswer = true;
@@ -66,6 +67,7 @@ namespace English_Flashcards.ViewModels
         #region Collections
         public  static ObservableQueue<Card> Cards { get; set; }
         #endregion
+
 
         public MainPageVewModel()
         {
@@ -80,17 +82,18 @@ namespace English_Flashcards.ViewModels
             #region Cards
             Cards = new ObservableQueue<Card>();
 
-            Task.Run(async () =>
-            {
-                await FillCards();
-            }).Wait();
-
+            Application.Current.MainPage.Loaded += LoadCards;
             Cards.CollectionChanged += UpdateCount;
             #endregion
 
             #endregion
 
             UserScore = new Score();
+        }
+
+        private async void LoadCards(object sender, EventArgs e)
+        {
+            await FillCards(2);
             DisplayedCard = Cards.Dequeue();
         }
 
@@ -109,11 +112,11 @@ namespace English_Flashcards.ViewModels
             get { return _DisplayedCard; }
             set => Set(ref _DisplayedCard, value);
         }
-        #endregion
+#endregion
 
         public static uint StartSheetRowId { get; set; } = 0;
 
-        #region Score - UserScore 
+#region Score - UserScore 
         /// <summary>
         /// User account during the knowledge test
         /// </summary>
@@ -127,10 +130,10 @@ namespace English_Flashcards.ViewModels
             get { return _UserScore; }
             set => Set(ref _UserScore, value);
         }
-        #endregion
+#endregion
 
 
-        #region int - CardsCount 
+#region int - CardsCount 
         /// <summary>
         /// Specifies the number of cards in the queue
         /// </summary>
@@ -144,10 +147,10 @@ namespace English_Flashcards.ViewModels
             get { return _CardsCount + 1; }
             set => Set(ref _CardsCount, value);
         }
-        #endregion
+#endregion
 
 
-        #region string - Title 
+#region string - Title 
         /// <summary>
         /// Main window Title
         /// </summary>
@@ -161,8 +164,8 @@ namespace English_Flashcards.ViewModels
             get { return _Title; }
             set => Set(ref _Title, value);
         }
-        #endregion
-        #endregion
+#endregion
+#endregion
 
         #region Methods
         static async Task FillCards(uint startRowId = 2)
@@ -179,15 +182,30 @@ namespace English_Flashcards.ViewModels
             }
             catch (GoogleSheetsException googleEx)
             {
-                await Application.Current.MainPage.DisplayPromptAsync("Ошибка!", "Возникла ошибка доступа к Google таблице." +
+                await Application.Current.MainPage.DisplayAlert("Ошибка!", "Возникла ошибка доступа к Google таблице." +
                         "\nПожалуйста проверьте ваше интернет соединение" +
                         $"\n\nТекст ошибка {googleEx.Message}", "Ok");
             }
             catch(Exception ex)
             {
-                await Application.Current.MainPage.DisplayPromptAsync("Ошибка!", "Возникала ошибка при вополнении" +
+                await Application.Current.MainPage.DisplayAlert("Ошибка!", "Возникала ошибка при вополнении" +
                     $"\n\n Текст ошибки {ex.Message}", "Ok");
             }
+        }
+
+        private bool IsCardCommandCanExecute()
+        {
+            if (IsBusy == false)
+            {
+                return true;
+            }
+            
+            if (Cards.Count != 0)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private void UpdateCount(object sender, NotifyCollectionChangedEventArgs e)
