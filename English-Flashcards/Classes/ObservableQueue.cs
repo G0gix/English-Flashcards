@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace English_Flashcards.Classes
 {
-    internal class ObservableQueue<T> : Queue<T> , INotifyCollectionChanged, IEnumerable<T>, INotifyPropertyChanged
+    internal class ObservableQueue<T> : Queue<T>, INotifyCollectionChanged, IEnumerable<T>, INotifyPropertyChanged
     {
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
@@ -13,7 +13,7 @@ namespace English_Flashcards.Classes
 
         public ObservableQueue(IEnumerable<T> collection) : base(collection)
         {
-            
+
         }
 
         #region Methods
@@ -51,7 +51,7 @@ namespace English_Flashcards.Classes
 
             var handlers = PropertyChanged;
             if (handlers is null) return;
-        } 
+        }
         #endregion
 
 

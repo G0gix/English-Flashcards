@@ -50,7 +50,7 @@ namespace English_Flashcards.ViewModels
             UserScore.Correct++;
             DisplayedCard = Cards.Dequeue();
         }
-
+        #endregion
 
         #region ShowCardAnswer
         public ICommand ShowCardAnswerCommand { get; }
@@ -62,10 +62,9 @@ namespace English_Flashcards.ViewModels
         #endregion
 
         #endregion
-        #endregion
 
         #region Collections
-        public  static ObservableQueue<Card> Cards { get; set; }
+        public static ObservableQueue<Card> Cards { get; set; }
         #endregion
 
 
@@ -78,23 +77,15 @@ namespace English_Flashcards.ViewModels
             #endregion
 
             #region Collections
-            
-            #region Cards
             Cards = new ObservableQueue<Card>();
+            #endregion
 
+            #region Events
             Application.Current.MainPage.Loaded += LoadCards;
             Cards.CollectionChanged += UpdateCount;
             #endregion
 
-            #endregion
-
             UserScore = new Score();
-        }
-
-        private async void LoadCards(object sender, EventArgs e)
-        {
-            await FillCards(2);
-            DisplayedCard = Cards.Dequeue();
         }
 
         #region Properties
@@ -112,11 +103,11 @@ namespace English_Flashcards.ViewModels
             get { return _DisplayedCard; }
             set => Set(ref _DisplayedCard, value);
         }
-#endregion
+        #endregion
 
         public static uint StartSheetRowId { get; set; } = 0;
 
-#region Score - UserScore 
+        #region Score - UserScore 
         /// <summary>
         /// User account during the knowledge test
         /// </summary>
@@ -130,10 +121,10 @@ namespace English_Flashcards.ViewModels
             get { return _UserScore; }
             set => Set(ref _UserScore, value);
         }
-#endregion
+        #endregion
 
 
-#region int - CardsCount 
+        #region int - CardsCount 
         /// <summary>
         /// Specifies the number of cards in the queue
         /// </summary>
@@ -147,10 +138,10 @@ namespace English_Flashcards.ViewModels
             get { return _CardsCount + 1; }
             set => Set(ref _CardsCount, value);
         }
-#endregion
+        #endregion
 
 
-#region string - Title 
+        #region string - Title 
         /// <summary>
         /// Main window Title
         /// </summary>
@@ -164,10 +155,18 @@ namespace English_Flashcards.ViewModels
             get { return _Title; }
             set => Set(ref _Title, value);
         }
-#endregion
-#endregion
+        #endregion
+        #endregion
 
         #region Methods
+        private async void LoadCards(object sender, EventArgs e)
+        {
+            IsBusy = true;
+            await FillCards(2);
+            IsBusy = false;
+            DisplayedCard = Cards.Dequeue();
+        }
+
         static async Task FillCards(uint startRowId = 2)
         {
             try
@@ -186,7 +185,7 @@ namespace English_Flashcards.ViewModels
                         "\nПожалуйста проверьте ваше интернет соединение" +
                         $"\n\nТекст ошибка {googleEx.Message}", "Ok");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await Application.Current.MainPage.DisplayAlert("Ошибка!", "Возникала ошибка при вополнении" +
                     $"\n\n Текст ошибки {ex.Message}", "Ok");
@@ -199,7 +198,7 @@ namespace English_Flashcards.ViewModels
             {
                 return true;
             }
-            
+
             if (Cards.Count != 0)
             {
                 return true;
@@ -214,7 +213,7 @@ namespace English_Flashcards.ViewModels
             {
                 CardsCount = queue.Count;
             }
-        } 
+        }
         #endregion
     }
 }

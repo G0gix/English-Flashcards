@@ -31,7 +31,6 @@ using English_Flashcards.Infrastructure.Commands.Base;
 using System;
 using Command = English_Flashcards.Infrastructure.Commands.Base.Command;
 */
-using System;
 using Command = English_Flashcards.Infrastructure.Commands.Base.Command;
 
 namespace English_Flashcards.Infrastructure.Commands

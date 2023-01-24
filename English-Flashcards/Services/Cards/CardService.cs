@@ -1,8 +1,8 @@
-﻿using Google.Apis.Sheets.v4;
-using GoogleAPI_Library.Models;
+﻿using English_Flashcards.Models;
+using Google.Apis.Sheets.v4;
 using GoogleAPI_Library;
-using English_Flashcards.Models;
 using GoogleAPI_Library.Exceptions;
+using GoogleAPI_Library.Models;
 
 namespace English_Flashcards.Services.Cards
 {
@@ -53,7 +53,7 @@ namespace English_Flashcards.Services.Cards
             {
                 throw;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
@@ -104,7 +104,7 @@ namespace English_Flashcards.Services.Cards
             {
                 throw;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }

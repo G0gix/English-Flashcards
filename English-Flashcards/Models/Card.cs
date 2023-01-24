@@ -6,7 +6,7 @@ namespace English_Flashcards.Models
     {
         public string EnglishText { get; set; }
         public string RussianText { get; set; }
-        public CartDisplayOptions DisplayOptions{ get; set; }
+        public CartDisplayOptions DisplayOptions { get; set; }
 
     }
 
@@ -24,10 +24,10 @@ namespace English_Flashcards.Models
         /// Determines if the correct answer is visible
         /// </summary>
         public bool ShowAnswer
-	    {
-	   	    get { return _ShowAnswer; }
-	   	    set => Set(ref _ShowAnswer, value);
-	    }
-	   #endregion
+        {
+            get { return _ShowAnswer; }
+            set => Set(ref _ShowAnswer, value);
+        }
+        #endregion
     }
 }
