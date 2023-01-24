@@ -1,7 +1,9 @@
-﻿using English_Flashcards.Infrastructure.Commands;
+﻿using English_Flashcards.Classes;
+using English_Flashcards.Infrastructure.Commands;
 using English_Flashcards.Models;
-using English_Flashcards.Services;
+using English_Flashcards.Services.Cards;
 using English_Flashcards.ViewModels.Base;
+using System.Collections.Specialized;
 using System.Windows.Input;
 
 namespace English_Flashcards.ViewModels
@@ -10,7 +12,6 @@ namespace English_Flashcards.ViewModels
     {
 
         #region Commands
-
         #region RepeatCardCommand
         public ICommand RepeatCardCommand { get; }
         private bool CanRepeatCardCommandExecute(object p) => !IsBusy;
@@ -63,9 +64,7 @@ namespace English_Flashcards.ViewModels
 
 
         #region Collections
-        public  static Queue<Card> Cards { get; set; }
-        
-        
+        public  static ObservableQueue<Card> Cards { get; set; }
         #endregion
 
         public MainPageVewModel()
@@ -77,14 +76,26 @@ namespace English_Flashcards.ViewModels
             #endregion
 
             #region Collections
-            
+            Cards = new ObservableQueue<Card>();
+
             Task.Run(async () => { 
                 await FillCards();
             }).Wait();
 
+            Cards.CollectionChanged += UpdateCount;
+
             UserScore = new Score();
             DisplayedCard = Cards.Dequeue();
+            
             #endregion
+        }
+
+        private void UpdateCount(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (sender is ObservableQueue<Card> queue)
+            {
+                CardsCount = queue.Count;
+            }
         }
 
         #region Properties
@@ -123,6 +134,23 @@ namespace English_Flashcards.ViewModels
         #endregion
 
 
+        #region int - CardsCount 
+        /// <summary>
+        /// 
+        /// </summary>
+        private int _CardsCount;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int CardsCount
+        {
+            get { return _CardsCount + 1; }
+            set => Set(ref _CardsCount, value);
+        }
+        #endregion
+
+
         #region string - Title 
         /// <summary>
         /// Main window Title
@@ -144,7 +172,11 @@ namespace English_Flashcards.ViewModels
         {
             CardService cardService = new CardService();
             var Data = await cardService.GetCards(startRowId);
-            Cards = new Queue<Card>(Data);
+
+            foreach (var item in Data)
+            {
+                Cards.Enqueue(item);
+            }
         }
     }
 }

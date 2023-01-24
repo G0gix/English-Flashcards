@@ -57,6 +57,10 @@
                            Margin="10,0,0,0"
                            TextColor="#D22F47" />
                 </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Количество карточек: " />
+                    <Label Text="{Binding CardsCount}" />
+                </StackLayout>
             </StackLayout>
             <StackLayout x:Name="CardPanel"
                          HorizontalOptions="CenterAndExpand"
