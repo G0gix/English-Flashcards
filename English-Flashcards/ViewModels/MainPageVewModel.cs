@@ -11,13 +11,12 @@ namespace English_Flashcards.ViewModels
 {
     internal class MainPageVewModel : ViewModel
     {
-
         #region Commands
+        
         #region RepeatCardCommand
         public ICommand RepeatCardCommand { get; }
         private bool CanRepeatCardCommandExecute(object p) => IsCardCommandCanExecute();
-
-        private async void OnRepeatCardCommandExecute(object p)
+        private void OnRepeatCardCommandExecute(object p)
         {
             Cards.Enqueue(DisplayedCard);
             DisplayedCard.DisplayOptions.ShowAnswer = false;
@@ -55,7 +54,7 @@ namespace English_Flashcards.ViewModels
         #region ShowCardAnswer
         public ICommand ShowCardAnswerCommand { get; }
         private bool CanShowCardAnswerCommandExecute(object p) => IsCardCommandCanExecute();
-        private async void OnShowCardAnswerCommandExecute(object p)
+        private void OnShowCardAnswerCommandExecute(object p)
         {
             DisplayedCard.DisplayOptions.ShowAnswer = true;
         }
@@ -66,7 +65,6 @@ namespace English_Flashcards.ViewModels
         #region Collections
         public static ObservableQueue<Card> Cards { get; set; }
         #endregion
-
 
         public MainPageVewModel()
         {
@@ -159,6 +157,11 @@ namespace English_Flashcards.ViewModels
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Loading cards when creating an application
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void LoadCards(object sender, EventArgs e)
         {
             IsBusy = true;
@@ -167,17 +170,25 @@ namespace English_Flashcards.ViewModels
             DisplayedCard = Cards.Dequeue();
         }
 
+        /// <summary>
+        /// Get the Card data from Google Sheet and insert in queue
+        /// </summary>
+        /// <param name="startRowId">Determines which row should start the selection from the Google spreadsheet</param>
+        /// <returns></returns>
         static async Task FillCards(uint startRowId = 2)
         {
             try
             {
                 CardService cardService = new CardService();
-                var Data = await cardService.GetCards(startRowId);
+                var cards = await cardService.GetCards(startRowId);
 
-                foreach (var item in Data)
+                await Task.Run(() =>
                 {
-                    Cards.Enqueue(item);
-                }
+                    foreach (Card card in cards)
+                    {
+                        Cards.Enqueue(card);
+                    }
+                });
             }
             catch (GoogleSheetsException googleEx)
             {
@@ -192,6 +203,10 @@ namespace English_Flashcards.ViewModels
             }
         }
 
+        /// <summary>
+        /// Defines a set of checks under which commands can be executed
+        /// </summary>
+        /// <returns></returns>
         private bool IsCardCommandCanExecute()
         {
             if (IsBusy == false)
@@ -207,6 +222,11 @@ namespace English_Flashcards.ViewModels
             return false;
         }
 
+        /// <summary>
+        /// Updates the number of cards in the view
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UpdateCount(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (sender is ObservableQueue<Card> queue)
