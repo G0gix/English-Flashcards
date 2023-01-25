@@ -24,9 +24,13 @@ namespace English_Flashcards.ViewModels
             DisplayedCard.DisplayOptions.ShowAnswer = false;
             DisplayedCard = Cards.Dequeue();
 
+            UserScore.Wrong++;
+            
+            #if WINDOWS
+                return;
+            #endif
 
             Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(250));
-            UserScore.Wrong++;
         }
         #endregion
 
