@@ -48,8 +48,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\sound.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Folder Include="Infrastructure\Commands\" />
-	  <Folder Include="Resources\Images\" />
 	  <Folder Include="ViewModels\Base\" />
 	</ItemGroup>
 

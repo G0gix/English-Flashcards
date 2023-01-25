@@ -101,26 +101,45 @@
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ShowCardAnswerCommand}" />
                         </StackLayout.GestureRecognizers>
-                        <Label Text="{Binding DisplayedCard.EnglishText}" 
+                        <StackLayout>
+                            <Label Text="{Binding DisplayedCard.EnglishText}" 
                                FontSize="{OnPlatform Android=40, iOS=40, WinUI=50, Default=20}"
                                TextColor="White"
                                HorizontalTextAlignment="Center"
                                HorizontalOptions="CenterAndExpand"
                                VerticalOptions="Center"
                                >
-                            <Label.Margin>
-                                <OnPlatform x:TypeArguments="Thickness">
-                                    <On Platform="iOS, Android" Value="0,60,0,0" />
-                                    <On Platform="WinUI" Value="0,180,0,0" />
-                                </OnPlatform>
-                            </Label.Margin>
-                        </Label>
-                        <Label Text="{Binding DisplayedCard.RussianText}" 
-                               FontSize="{OnPlatform Android=20,iOS=20,WinUI=25,Default=20}"
-                               HorizontalTextAlignment="Center"
-                               IsVisible="{Binding DisplayedCard.DisplayOptions.ShowAnswer}"
-                               TextColor="White"
+                                <Label.Margin>
+                                    <OnPlatform x:TypeArguments="Thickness">
+                                        <On Platform="iOS, Android" Value="0,60,0,0" />
+                                        <On Platform="WinUI" Value="0,180,0,0" />
+                                    </OnPlatform>
+                                </Label.Margin>
+                            </Label>
+                            <Label Text="{Binding DisplayedCard.RussianText}" 
+                                   FontSize="{OnPlatform Android=20,iOS=20,WinUI=25,Default=20}"
+                                   HorizontalTextAlignment="Center"
+                                   IsVisible="{Binding DisplayedCard.DisplayOptions.ShowAnswer}"
+                                   TextColor="White"
                                />
+                        </StackLayout>
+                        <StackLayout VerticalOptions="EndAndExpand"
+                                     HorizontalOptions="StartAndExpand"
+                                     Margin="5,0,0,5"
+                                     WidthRequest="{OnPlatform Android=90, iOS=70, WinUI=110, Default=70}"
+                                     HeightRequest="{OnPlatform Android=90, iOS=70, WinUI=110, Default=70}"
+                                     >
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SpeakTextCommand}" />
+                            </StackLayout.GestureRecognizers>
+                                <Image Source="sound.png" 
+                                       HorizontalOptions="CenterAndExpand"
+                                       VerticalOptions="CenterAndExpand"
+                                       WidthRequest="{OnPlatform Android=30, iOS=30, WinUI=50, Default=30}"
+                                       HeightRequest="{OnPlatform Android=30, iOS=30, WinUI=50, Default=30}"
+                                       BackgroundColor="Transparent"
+                                       />
+                        </StackLayout>
                     </StackLayout>
                 </SwipeView>
                 <StackLayout x:Name="Pc_Buttons"

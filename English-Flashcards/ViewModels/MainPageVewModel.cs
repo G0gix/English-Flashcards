@@ -1,9 +1,11 @@
 ﻿using English_Flashcards.Classes;
 using English_Flashcards.Infrastructure.Commands;
 using English_Flashcards.Models;
+using English_Flashcards.Services;
 using English_Flashcards.Services.Cards;
 using English_Flashcards.ViewModels.Base;
 using GoogleAPI_Library.Exceptions;
+using Microsoft.Maui.Media;
 using System.Collections.Specialized;
 using System.Windows.Input;
 
@@ -62,6 +64,15 @@ namespace English_Flashcards.ViewModels
         }
         #endregion
 
+        #region SpeakTextCommand 
+        public ICommand SpeakTextCommand { get; }
+        private bool CanSpeakTextCommandExecute(object p) => IsCardCommandCanExecute();
+        private void OnSpeakTextCommandExecute(object p)
+        {
+            PlatformIntegration.SpeakText(DisplayedCard.EnglishText);
+        }
+        #endregion
+        
         #endregion
 
         #region Collections
@@ -74,6 +85,7 @@ namespace English_Flashcards.ViewModels
             RepeatCardCommand = new LamdaCommand(OnRepeatCardCommandExecute, CanRepeatCardCommandExecute);
             CardDoneCommand = new LamdaCommand(OnCardDoneCommandExecute, CanCardDoneCommandExecute);
             ShowCardAnswerCommand = new LamdaCommand(OnShowCardAnswerCommandExecute, CanShowCardAnswerCommandExecute);
+            SpeakTextCommand = new LamdaCommand(OnSpeakTextCommandExecute, CanSpeakTextCommandExecute);
             #endregion
 
             #region Collections
@@ -157,6 +169,8 @@ namespace English_Flashcards.ViewModels
         }
         #endregion
         #endregion
+
+        
 
         #region Methods
         /// <summary>
