@@ -4,6 +4,7 @@
              x:Class="English_Flashcards.MainPage"
              xmlns:viewmodels="clr-namespace:English_Flashcards.ViewModels"
              xmlns:models="clr-namespace:English_Flashcards.Models"
+             xmlns:extensions="clr-namespace:English_Flashcards.Extensions.Xaml"
              >
     <ContentPage.BindingContext>
         <viewmodels:MainPageVewModel />
@@ -72,25 +73,15 @@
             <StackLayout x:Name="CardPanel"
                          HorizontalOptions="CenterAndExpand"
                          VerticalOptions="CenterAndExpand"
+                         IsVisible="{Binding IsBusy, Converter={extensions:InverseBoolConverter}}"
                          >
                 <StackLayout.Margin>
                     <OnPlatform x:TypeArguments="Thickness">
-                        <On Platform="iOS, Android" Value="0,0,0,0" />
+                        <On Platform="iOS, Android" Value="0,0,0,30" />
                         <On Platform="WinUI" Value="0,20,0,0" />
                     </OnPlatform>
                 </StackLayout.Margin>
-                <SwipeView>
-                    <SwipeView.LeftItems>
-                        <SwipeItems Mode="Execute">
-                            <SwipeItem Text="Не знаю" BackgroundColor="#D22F47" Command="{Binding RepeatCardCommand}" />
-                        </SwipeItems>
-                    </SwipeView.LeftItems>
-                    <SwipeView.RightItems>
-                        <SwipeItems Mode="Execute">
-                            <SwipeItem Text="Знаю" BackgroundColor="LightGreen" Command="{Binding CardDoneCommand}"/>
-                        </SwipeItems>
-                    </SwipeView.RightItems>
-                    <StackLayout x:Name="Card"
+                <StackLayout x:Name="Card"
                                  Orientation="Vertical"
                                  HorizontalOptions="CenterAndExpand"
                                  VerticalOptions="CenterAndExpand"
@@ -135,28 +126,39 @@
                                 <Image Source="sound.png" 
                                        HorizontalOptions="CenterAndExpand"
                                        VerticalOptions="CenterAndExpand"
+                                       BackgroundColor="Transparent"
                                        WidthRequest="{OnPlatform Android=30, iOS=30, WinUI=50, Default=30}"
                                        HeightRequest="{OnPlatform Android=30, iOS=30, WinUI=50, Default=30}"
-                                       BackgroundColor="Transparent"
+                                       
                                        />
                         </StackLayout>
                     </StackLayout>
-                </SwipeView>
-                <StackLayout x:Name="Pc_Buttons"
-                             IsVisible="{OnPlatform Android=false, WinUI=true, iOS=false}" Orientation="Horizontal"
-                             VerticalOptions="Center"
+                <StackLayout x:Name="Buttons"
+                             Orientation="Horizontal"
+                             VerticalOptions="End"
                              HorizontalOptions="Center"
-                             Margin="0,40,0,40"
-                             WidthRequest="500"
+                             WidthRequest="{OnPlatform Android=300, iOS=300, WinUI=500, Default=300}"
+                             HeightRequest="50"
                              >
-                    <Button Text="Не знаю" BackgroundColor="#D22F47" WidthRequest="245" HeightRequest="50" TextColor="White"
-                            Margin="0,0,10,0"
-                            Command="{Binding RepeatCardCommand}"
-                            />
-                    <Button Text="Знаю" BackgroundColor="LightGreen" 
-                            WidthRequest="245" 
+                    <StackLayout.Margin>
+                        <OnPlatform x:TypeArguments="Thickness">
+                            <On Platform="iOS, Android" Value="0,0,0,30" />
+                            <On Platform="WinUI" Value="0,40,0,40" />
+                        </OnPlatform>
+                    </StackLayout.Margin>
+                    <Button Text="Не знаю" 
+                            BackgroundColor="#D22F47" 
                             HeightRequest="50" 
                             TextColor="White"
+                            Margin="0,0,10,0"
+                            WidthRequest="{OnPlatform Android=145, iOS=30, WinUI=245, Default=30} " 
+                            Command="{Binding RepeatCardCommand}"
+                            />
+                    <Button Text="Знаю" 
+                            BackgroundColor="LightGreen" 
+                            HeightRequest="50" 
+                            TextColor="White"
+                            WidthRequest="{OnPlatform Android=145, iOS=30, WinUI=245, Default=30}" 
                             Command="{Binding CardDoneCommand}"
                             />
                 </StackLayout>
