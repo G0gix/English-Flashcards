@@ -82,18 +82,19 @@
                     </OnPlatform>
                 </StackLayout.Margin>
                 <StackLayout x:Name="Card"
-                                 Orientation="Vertical"
-                                 HorizontalOptions="CenterAndExpand"
-                                 VerticalOptions="CenterAndExpand"
-                                 WidthRequest="{OnPlatform Android=300, WinUI=500, iOS=300,Default=500}"
-                                 HeightRequest="{OnPlatform Android=300, WinUI=500, iOS=300, Default=500}"
-                                 BackgroundColor="{Binding DisplayedCard.DisplayOptions.BackColor}"
-                                 >
+                             Orientation="Vertical"
+                             HorizontalOptions="CenterAndExpand"
+                             VerticalOptions="CenterAndExpand"
+                             WidthRequest="{OnPlatform Android=300, WinUI=500, iOS=300, Default=300}"
+                             HeightRequest="{OnPlatform Android=300, WinUI=500, iOS=300, Default=300}"
+                             BackgroundColor="{Binding DisplayedCard.DisplayOptions.BackColor}"
+                             >
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ShowCardAnswerCommand}" />
                         </StackLayout.GestureRecognizers>
                         <StackLayout>
-                            <Label Text="{Binding DisplayedCard.EnglishText}" 
+                        <Label x:Name="EnglishText"
+                               Text="{Binding DisplayedCard.EnglishText}" 
                                FontSize="{OnPlatform Android=40, iOS=40, WinUI=50, Default=20}"
                                TextColor="White"
                                HorizontalTextAlignment="Center"
@@ -151,14 +152,14 @@
                             HeightRequest="50" 
                             TextColor="White"
                             Margin="0,0,10,0"
-                            WidthRequest="{OnPlatform Android=145, iOS=30, WinUI=245, Default=30} " 
+                            WidthRequest="{OnPlatform Android=145, iOS=145, WinUI=245, Default=145} " 
                             Command="{Binding RepeatCardCommand}"
                             />
                     <Button Text="Знаю" 
                             BackgroundColor="LightGreen" 
                             HeightRequest="50" 
                             TextColor="White"
-                            WidthRequest="{OnPlatform Android=145, iOS=30, WinUI=245, Default=30}" 
+                            WidthRequest="{OnPlatform Android=145, iOS=145, WinUI=245, Default=145}" 
                             Command="{Binding CardDoneCommand}"
                             />
                 </StackLayout>
