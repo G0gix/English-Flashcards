@@ -47,12 +47,13 @@ namespace English_Flashcards.ViewModels
 
                 IsBusy = true;
                 await FillCards(StartSheetRowId);
-                IsBusy = false;
-
+               
                 await App.Current.MainPage.DisplayAlert("Внимание", "Карты закончились\n\n" +
                     "Ваш счет" +
                     $"\nПравильно: {UserScore.Correct}" +
                     $"\nНе правильно: {UserScore.Wrong}", "Ok");
+                
+                IsBusy = false;
             }
 
             UserScore.Correct++;
@@ -65,6 +66,9 @@ namespace English_Flashcards.ViewModels
         private bool CanShowCardAnswerCommandExecute(object p) => IsCardCommandCanExecute();
         private void OnShowCardAnswerCommandExecute(object p)
         {
+            if (DisplayedCard == null)
+                return;
+            
             DisplayedCard.DisplayOptions.ShowAnswer = true;
         }
         #endregion
@@ -209,8 +213,8 @@ namespace English_Flashcards.ViewModels
 
                 if (cards == null)
                 {
-                    await App.Current.MainPage.DisplayAlert("Внимание", "Карты подошли к концу", "ОК");
-                    return;
+                    await App.Current.MainPage.DisplayAlert("Внимание", "Карты подошли к концу.\nПриложение завершит свою работу", "ОК");
+                    Application.Current?.CloseWindow(Application.Current.MainPage.Window);
                 }
 
                 await Task.Run(() =>
