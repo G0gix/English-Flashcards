@@ -5,17 +5,15 @@ using English_Flashcards.Services;
 using English_Flashcards.Services.Cards;
 using English_Flashcards.ViewModels.Base;
 using GoogleAPI_Library.Exceptions;
-using Microsoft.Maui.Media;
 using System.Collections.Specialized;
 using System.Windows.Input;
-using System.Linq;
 
 namespace English_Flashcards.ViewModels
 {
     internal class MainPageVewModel : ViewModel
     {
         #region Commands
-        
+
         #region RepeatCardCommand
         public ICommand RepeatCardCommand { get; }
         private bool CanRepeatCardCommandExecute(object p) => IsCardCommandCanExecute();
@@ -25,11 +23,11 @@ namespace English_Flashcards.ViewModels
             DisplayedCard.DisplayOptions.ShowAnswer = false;
             DisplayedCard = Cards.Dequeue();
 
-            UserScore.Wrong++; 
-            
-            #if WINDOWS
+            UserScore.Wrong++;
+
+#if WINDOWS
                 return;
-            #endif
+#endif
 
             Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(250));
         }
@@ -47,12 +45,12 @@ namespace English_Flashcards.ViewModels
 
                 IsBusy = true;
                 await FillCards(StartSheetRowId);
-               
+
                 await App.Current.MainPage.DisplayAlert("Внимание", "Карты закончились\n\n" +
                     "Ваш счет" +
                     $"\nПравильно: {UserScore.Correct}" +
                     $"\nНе правильно: {UserScore.Wrong}", "Ok");
-                
+
                 IsBusy = false;
             }
 
@@ -68,7 +66,7 @@ namespace English_Flashcards.ViewModels
         {
             if (DisplayedCard == null)
                 return;
-            
+
             DisplayedCard.DisplayOptions.ShowAnswer = true;
         }
         #endregion
@@ -80,12 +78,12 @@ namespace English_Flashcards.ViewModels
         {
             if (string.IsNullOrWhiteSpace(DisplayedCard.EnglishText))
                 return;
-            
+
 
             PlatformIntegration.SpeakText(DisplayedCard.EnglishText);
         }
         #endregion
-        
+
         #endregion
 
         #region Collections
@@ -183,7 +181,7 @@ namespace English_Flashcards.ViewModels
         #endregion
         #endregion
 
-        
+
 
         #region Methods
         /// <summary>
