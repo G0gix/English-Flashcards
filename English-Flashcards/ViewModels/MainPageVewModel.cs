@@ -17,17 +17,21 @@ namespace English_Flashcards.ViewModels
         #region RepeatCardCommand
         public ICommand RepeatCardCommand { get; }
         private bool CanRepeatCardCommandExecute(object p) => IsCardCommandCanExecute();
-        private void OnRepeatCardCommandExecute(object p)
+        private async void OnRepeatCardCommandExecute(object p)
         {
+            CardAnimation(CardAnimationMode.Repeat);
             Cards.Enqueue(DisplayedCard);
             DisplayedCard.DisplayOptions.ShowAnswer = false;
+
+            await Task.Delay(500);
+
             DisplayedCard = Cards.Dequeue();
 
             UserScore.Wrong++;
 
-#if WINDOWS
+            #if WINDOWS
                 return;
-#endif
+            #endif
 
             Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(250));
         }
@@ -54,6 +58,9 @@ namespace English_Flashcards.ViewModels
                 IsBusy = false;
             }
 
+            CardAnimation(CardAnimationMode.Done);
+            await Task.Delay(500);
+            
             UserScore.Correct++;
             DisplayedCard = Cards.Dequeue();
         }
@@ -89,6 +96,8 @@ namespace English_Flashcards.ViewModels
         #region Collections
         public static ObservableQueue<Card> Cards { get; set; }
         #endregion
+
+        public static Action<CardAnimationMode> CardAnimation;
 
         public MainPageVewModel()
         {
@@ -180,8 +189,6 @@ namespace English_Flashcards.ViewModels
         }
         #endregion
         #endregion
-
-
 
         #region Methods
         /// <summary>
