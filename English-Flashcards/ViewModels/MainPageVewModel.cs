@@ -8,6 +8,7 @@ using GoogleAPI_Library.Exceptions;
 using Microsoft.Maui.Media;
 using System.Collections.Specialized;
 using System.Windows.Input;
+using System.Linq;
 
 namespace English_Flashcards.ViewModels
 {
@@ -24,7 +25,7 @@ namespace English_Flashcards.ViewModels
             DisplayedCard.DisplayOptions.ShowAnswer = false;
             DisplayedCard = Cards.Dequeue();
 
-            UserScore.Wrong++;
+            UserScore.Wrong++; 
             
             #if WINDOWS
                 return;
@@ -73,6 +74,10 @@ namespace English_Flashcards.ViewModels
         private bool CanSpeakTextCommandExecute(object p) => IsCardCommandCanExecute();
         private void OnSpeakTextCommandExecute(object p)
         {
+            if (string.IsNullOrWhiteSpace(DisplayedCard.EnglishText))
+                return;
+            
+
             PlatformIntegration.SpeakText(DisplayedCard.EnglishText);
         }
         #endregion
@@ -202,6 +207,12 @@ namespace English_Flashcards.ViewModels
                 CardService cardService = new CardService();
                 var cards = await cardService.GetCards(startRowId);
 
+                if (cards == null)
+                {
+                    await App.Current.MainPage.DisplayAlert("Внимание", "Карты подошли к концу", "ОК");
+                    return;
+                }
+
                 await Task.Run(() =>
                 {
                     foreach (Card card in cards)
@@ -230,6 +241,11 @@ namespace English_Flashcards.ViewModels
         private bool IsCardCommandCanExecute()
         {
             if (IsBusy == false)
+            {
+                return true;
+            }
+
+            if (DisplayedCard != null)
             {
                 return true;
             }

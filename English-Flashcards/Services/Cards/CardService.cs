@@ -71,6 +71,11 @@ namespace English_Flashcards.Services.Cards
 
                 var value = await googleSheetsManager.Read(googleSheetOptions);
 
+                if (value == null)
+                {
+                    return null;
+                }
+
                 List<Card> cards = new List<Card>();
 
                 await Task.Run(async () =>
